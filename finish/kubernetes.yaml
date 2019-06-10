@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: system-deployment
+  labels:
+    app: system
+spec:
+  selector:
+    matchLabels:
+      app: system
+  template:
+    metadata:
+      labels:
+        app: system
+    spec:
+      containers:
+      - name: system-container
+        image: registrynim.azurecr.io/system:1.0
+        ports:
+        - containerPort: 9080
+      imagePullSecrets:
+      - name: nimjustsecret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-deployment
+  labels:
+    app: inventory
+spec:
+  selector:
+    matchLabels:
+      app: inventory
+  template:
+    metadata:
+      labels:
+        app: inventory
+    spec:
+      containers:
+      - name: inventory-container
+        image: registrynim.azurecr.io/inventory:1.0
+        ports:
+        - containerPort: 9081
+      imagePullSecrets:
+      - name: nimjustsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: system-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: system
+  ports:
+  - protocol: TCP
+    port: 9080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: inventory
+  ports:
+  - protocol: TCP
+    port: 9081

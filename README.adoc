@@ -1,0 +1,77 @@
+// Copyright (c) 2019 IBM Corporation and others.
+// Licensed under Creative Commons Attribution-NoDerivatives
+// 4.0 International (CC BY-ND 4.0)
+//   https://creativecommons.org/licenses/by-nd/4.0/
+//
+// Contributors:
+//     IBM Corporation
+//
+:projectid: cloud-azure
+:page-layout: guide-multipane
+:page-duration: 15 minutes
+:page-releasedate: YYYY-MM-DD
+:page-description: Learn how to deploy microservices to Azure Kubernetes Service (AKS).
+:page-tags: ['Docker']
+:page-permalink: /guides/{projectid}
+:page-related-guides: ['docker', 'kubernetes-intro']
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:source-highlighter: prettify
+:page-seo-title: Deploying microservices to Azure Kubernetes Service
+:page-seo-description: Find out how to deploy an app to Azure Kubernetes Service
+:page-guide-category: microprofile
+:guide-author: Open Liberty
+=Deploying microservices to Azure Kubernetes Service
+
+[.hidden]
+NOTE: This repository contains the guide documentation source. To view the guide in published form,
+view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
+
+Learn how to deploy your microservices application to Azure Kubernetes Service (AKS).
+
+:kube: Kubernetes
+:hashtag: #
+:win: WINDOWS
+:mac: MAC
+:linux: LINUX
+:system-api: http://[hostname]:31000/system/properties
+:inventory-api: http://[hostname]:32000/inventory/systems
+
+
+// =================================================================================================
+// Introduction
+// =================================================================================================
+
+== What you'll learn
+
+
+[role='command']
+include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
+
+
+// =================================================================================================
+// Prerequisites
+// =================================================================================================
+
+// =================================================================================================
+// Getting Started
+// =================================================================================================
+
+[role=command]
+include::{common-includes}/gitclone.adoc[]
+
+// no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
+== Prerequisites
+
+
+// =================================================================================================
+// Tear Down
+// =================================================================================================
+
+== Tearing down the environment
+
+
+// =================================================================================================
+// finish
+// =================================================================================================
+
+== Great work! You're done!
