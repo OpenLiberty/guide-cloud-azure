@@ -9,7 +9,7 @@
 :projectid: cloud-azure
 :page-layout: guide-multipane
 :page-duration: 15 minutes
-:page-releasedate: YYYY-MM-DD
+:page-releasedate: 2019-06-11
 :page-description: Learn how to deploy microservices to Azure Kubernetes Service (AKS).
 :page-tags: ['Docker']
 :page-permalink: /guides/{projectid}
@@ -20,7 +20,7 @@
 :page-seo-description: Find out how to deploy an app to Azure Kubernetes Service
 :page-guide-category: microprofile
 :guide-author: Open Liberty
-=Deploying microservices to Azure Kubernetes Service
+= Deploying microservices to Azure Kubernetes Service
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
@@ -33,8 +33,8 @@ Learn how to deploy your microservices application to Azure Kubernetes Service (
 :win: WINDOWS
 :mac: MAC
 :linux: LINUX
-:system-api: http://[hostname]:31000/system/properties
-:inventory-api: http://[hostname]:32000/inventory/systems
+:system-api: http://[hostname]:9080/system/properties
+:inventory-api: http://[hostname]:9081/inventory/systems
 
 
 // =================================================================================================
@@ -43,14 +43,67 @@ Learn how to deploy your microservices application to Azure Kubernetes Service (
 
 == What you'll learn
 
+You will learn how to deploy two microservices in Open Liberty containers to a {kube} cluster on
+Azure Kubernetes Service (AKS).
 
-[role='command']
-include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitclone.adoc[]
+Kubernetes is an open source container orchestrator that automates many tasks involved in 
+deploying, managing, and scaling containerized applications. If you would like to learn
+more about Kubernetes, check out the https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^]
+guide.
 
+There are different cloud-based solutions for running your workloads in a {kube} cluster. 
+A cloud-based infrastructure enables you to focus on developing your microservices without 
+worrying about details related to the servers you deploy them to. Using a cloud helps 
+you to easily scale and serve your microservices in a high-availability setup.
+
+Azure offers a managed {kube} service called Azure Kubernetes Service (AKS). AKS simplifies the process of running Kubernetes on Azure without 
+needing to install or maintain your own Kubernetes control plane. It provides a hosted {kube} 
+cluster that you can deploy your microservices to. You will use AKS with an Azure
+Container Registry (ACR). ACR is a private registry that is used to store 
+and distribute your container images. Note, since AKS is not free, there is a small
+cost that is associated with deployig this application. See the official
+https://azure.microsoft.com/en-us/pricing/details/kubernetes-service/[AKS pricing^] documentation for more details.
+
+The two microservices that you'll be working with are called `system` and `inventory`. 
+The `system` microservice returns the JVM system properties of the running container.  
+The `inventory` microservice adds the properties from the `system` microservice to the inventory. 
+This guide demonstrates how both microservices can run and communicate
+in different isolated containers.
 
 // =================================================================================================
 // Prerequisites
 // =================================================================================================
+
+== Prerequisites
+
+Before you begin, the following tools need to be installed:
+
+- *Docker:* You need a containerization software for building containers. Kubernetes 
+supports various container types, but you will use Docker in this guide. For installation 
+instructions, refer to the official https://docs.docker.com/install/[Docker^] documentation.
+
+- *Azure Subscription:* To run this guide, you will need an Azure subscription. Navigate to the 
+https://azure.microsoft.com/en-us/pricing/purchase-options/pay-as-you-go/[Microsoft Azure Purchase Options] 
+to create an account with your email and start a Pay-As-You-Go subscription. 
+
+- *Azure CLI:* You will need to use the Azure Command Line Interface (CLI). See the official
+https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest[Install the Azure CLI^]
+documentation for information about setting up the Azure CLI for your platform.
+
+    To verify that the Azure CLI is installed correctly, run the following command:
+    
+    [role=command]
+    ```
+    az --version
+    ```
+
+- *kubectl:* You need the Kubernetes command-line tool `kubectl` to interact with your Kubernetes cluster.
+Use the Azure CLI to download and install `kubectl` with the following command:
+
+    [role=command]
+    ```
+    az aks install-cli
+    ```
 
 // =================================================================================================
 // Getting Started
@@ -60,7 +113,14 @@ include::https://raw.githubusercontent.com/OpenLiberty/guides-common/master/gitc
 include::{common-includes}/gitclone.adoc[]
 
 // no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
-== Prerequisites
+
+// =================================================================================================
+// Creating a Kubernetes cluster on AKS
+// =================================================================================================
+
+== Creating a Kubernetes cluster on AKS
+
+
 
 
 // =================================================================================================
