@@ -9,7 +9,7 @@
 :projectid: cloud-azure
 :page-layout: guide-multipane
 :page-duration: 15 minutes
-:page-releasedate: YYYY-MM-DD
+:page-releasedate: 2019-08-01
 :page-description: Learn how to deploy microservices to Azure Kubernetes Service (AKS).
 :page-tags: ['Docker']
 :page-permalink: /guides/{projectid}
