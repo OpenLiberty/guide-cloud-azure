@@ -150,7 +150,9 @@ See the list of available Azure regions for your Azure subscription:
 az account list-locations -o table
 ```
 
-The `name` column specifies the region name to inputed into 
+The `name` column specifies the region name that you will be using to create your resource group
+
+
 You will see an output similar to the following:
 
 [source, role="no_copy"]
@@ -278,7 +280,7 @@ You will see an output similar to the following:
   ],
   "username": "guide-registry"
 }
-
+```
 
 // =================================================================================================
 // Creating a Kubernetes cluster on AKS
