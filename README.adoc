@@ -105,8 +105,15 @@ Use the Azure CLI to download and install `kubectl` with the following command:
     az aks install-cli
     ```
 
+To begin this guide, make sure that you are logged in to Azure to get access to your subscription:
+
+[role=command]
+```
+az login
+```
+
 // =================================================================================================
-// Getting Started
+// Getting started
 // =================================================================================================
 
 [role=command]
@@ -115,10 +122,171 @@ include::{common-includes}/gitclone.adoc[]
 // no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
 
 // =================================================================================================
+// Managing an Azure Container Registry
+// =================================================================================================
+
+== Managing an Azure Container Registry
+
+In order to deploy your microservices, you need to create an Azure Container Registry in the same location
+as where your services will be deployed. 
+
+=== Creating a resource group
+
+Your Azure Container Registry will be placed inside its own resource group that you will create.
+
+A resource group is a logical collection of related resources that can be deployed and maintained as a single entity.
+For instance, virtual machines, databases, and storage networks are types of resources that resource groups can be formed from.
+Resource groups are dedicated to container registries because the resources in these registries are used by several 
+different hosts and their containers. 
+
+To create a resource group, an Azure location must be specified. The metadata for your resources are stored at this given location. 
+If resources are created without specifying a location and created after creating a resource group, these new resources will run in the
+same region specfied by the resource group location. 
+
+See the list of available Azure regions for your Azure subscription:
+
+[role=command]
+```
+az account list-locations -o table
+```
+
+The `name` column specifies the region name to inputed into 
+You will see an output similar to the following:
+
+[source, role="no_copy"]
+----
+DisplayName          Latitude    Longitude    Name
+-------------------  ----------  -----------  ------------------
+Central US           41.5908     -93.6208     centralus
+East US              37.3719     -79.8164     eastus
+East US 2            36.6681     -78.3889     eastus2
+West US              37.783      -122.417     westus
+North Central US     41.8819     -87.6278     northcentralus
+South Central US     29.4167     -98.5        southcentralus
+Canada Central       43.653      -79.383      canadacentral
+Canada East          46.817      -71.217      canadaeast
+UK South             50.941      -0.799       uksouth
+UK West              53.427      -3.084       ukwest
+West Central US      40.890      -110.234     westcentralus
+West US 2            47.233      -119.852     westus2
+----
+
+However, AKS is not available in all regions. Make sure that the region you select is 
+https://azure.microsoft.com/en-us/global-infrastructure/services/?products=kubernetes-service[compatible with AKS^].
+
+Create a resource group and replace `[location]` with a region that is available for your subscription and compatible with AKS.
+
+[role=command]
+```
+az group create -l [location] -n guide-group
+```
+
+You will see an output similar to the following:
+
+[source, role="no_copy"]
+```
+{
+  "id": "/subscriptions/[subscription-id]/resourceGroups/guide-group",
+  "location": "[location]",
+  "managedBy": null,
+  "name": "guide-group",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": null
+}
+```
+
+=== Creating a container registry
+
+Your private container registry will manage Docker images that you will build in later steps. 
+With the Azure `az acr` command, create an Azure Container Registry.
+
+[role=command]
+```
+az acr create -g guide-group -n guide-registry --sku Basic --admin-enabled
+```
+
+You will see an output similar to the following:
+
+[role="no_copy"]
+```
+{
+  "adminUserEnabled": true,
+  "creationDate": "2019-06-05T20:28:09.637994+00:00",
+  "id": "/subscriptions/[subscription-id]/resourceGroups/guide-group/providers/Microsoft.ContainerRegistry/registries/guide-registry",
+  "location": "[location]",
+  "loginServer": "guide-registry.azurecr.io",
+  "name": "guide-registry",
+  "networkRuleSet": null,
+  "provisioningState": "Succeeded",
+  "resourceGroup": "guide-group",
+  "sku": {
+    "name": "Basic",
+    "tier": "Basic"
+  },
+  "status": null,
+  "storageAccount": null,
+  "tags": {},
+  "type": "Microsoft.ContainerRegistry/registries"
+}
+```
+
+In the `az acr create` command, the `-g` option specifies the resource group to designate to the container registry. 
+You created this resource group before as `guide-group`. The `-n` option specifies the name of the
+container registry to be created, which was defined as `guide-registry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
+The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
+These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
+storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
+
+Your container registry has a server name of `guide-registry.azurecr.io`. 
+
+=== Logging into the container registry
+
+You must log into your Azure Container Registry using the Azure CLI, in order to be able to push Docker images to your registry.
+
+[role=command]
+```
+az acr login -n guide-registry
+```
+
+Once you login, you will see the following:
+
+[role="no_copy"]
+----
+Login Succeeded
+----
+
+Your login credentials will be needed later, so keep your given password in mind. 
+
+[role=command]
+```
+az acr credential show -n guide-registry
+```
+
+You will see an output similar to the following:
+
+[role="no_copy"]
+```
+{
+  "passwords": [
+    {
+      "name": "password",
+      "value": "[password]"
+    },
+  ],
+  "username": "guide-registry"
+}
+
+
+// =================================================================================================
 // Creating a Kubernetes cluster on AKS
 // =================================================================================================
 
 == Creating a Kubernetes cluster on AKS
+
+=== 
 
 
 
