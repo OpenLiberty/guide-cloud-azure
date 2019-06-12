@@ -33,7 +33,8 @@ public class InventoryEndpointTest {
 
     private static String invUrl;
     private static String sysUrl;
-    private static String systemServiceIp;
+    private static String sysKubeServiceIp;
+    private static String invKubeServiceIp;
 
     private Client client;
     private Response response;
@@ -43,15 +44,15 @@ public class InventoryEndpointTest {
         String invServPort = System.getProperty("inv.http.port");
         String sysServPort = System.getProperty("sys.http.port");
 
-        // tag::systemServiceIp[]
-        systemServiceIp = System.getProperty("system.ip");
-        // end::systemServiceIp[]
-        // tag::invServiceIp[]
-        invServiceIp = System.getProperty("inventory.ip");
-        // end::invServiceIp[]
+        // tag::systemKubeServiceIp[]
+        sysKubeServiceIp = System.getProperty("system.kube.service");
+        // end::systemKubeServiceIp[]
+        // tag::invKubeServiceIp[]
+        invKubeServiceIp = System.getProperty("inventory.kube.service");
+        // end::invKubeServiceIp[]
 
-        invUrl = "http://" + invServiceIp + ":" + invServPort + "/inventory/systems/";
-        sysUrl = "http://" + systemServiceIp + ":" + sysServPort + "/system/properties/";
+        invUrl = "http://" + invKubeServiceIp + ":" + invServPort + "/inventory/systems/";
+        sysUrl = "http://" + sysKubeServiceIp + ":" + sysServPort + "/system/properties/";
     }
 
     @Before
@@ -110,12 +111,12 @@ public class InventoryEndpointTest {
         int expected = 1;
         int actual = obj.getInt("total");
         assertEquals("The inventory should have one entry for the system service:" 
-                                             + systemServiceIp, expected, actual);
+                                             + sysKubeServiceIp, expected, actual);
 
         boolean serviceExists = obj.getJsonArray("systems").getJsonObject(0)
                                     .get("hostname").toString()
-                                    .contains(systemServiceIp);
-        assertTrue("A host was registered, but it was not " + systemServiceIp,
+                                    .contains(sysKubeServiceIp);
+        assertTrue("A host was registered, but it was not " + sysKubeServiceIp,
                 serviceExists);
 
         response.close();
@@ -140,12 +141,12 @@ public class InventoryEndpointTest {
 
         String osNameFromInventory = jsonFromInventory.getString("os.name");
         String osNameFromSystem = jsonFromSystem.getString("os.name");
-        this.assertProperty("os.name", systemServiceIp, osNameFromSystem,
+        this.assertProperty("os.name", sysKubeServiceIp, osNameFromSystem,
                             osNameFromInventory);
 
         String userNameFromInventory = jsonFromInventory.getString("user.name");
         String userNameFromSystem = jsonFromSystem.getString("user.name");
-        this.assertProperty("user.name", systemServiceIp, userNameFromSystem,
+        this.assertProperty("user.name", sysKubeServiceIp, userNameFromSystem,
                             userNameFromInventory);
 
         invResponse.close();
@@ -200,7 +201,7 @@ public class InventoryEndpointTest {
         response.close();
 
         Response targetResponse = client
-            .target(invUrl + systemServiceIp)
+            .target(invUrl + sysKubeServiceIp)
             .request()
             .get();
 

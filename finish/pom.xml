@@ -29,6 +29,9 @@
         <sys.service.https.port>9443</sys.service.https.port>
         <inv.service.http.port>9081</inv.service.http.port>
         <inv.service.https.port>9444</inv.service.https.port>
+        <!-- Default test properties -->
+        <system.kube.service>system-service</system.kube.service>
+        <inventory.kube.service>inventory-service</inventory.kube.service>
     </properties>
 
     <!-- Shared dependencies. -->
@@ -190,8 +193,12 @@
                                     <include>**/it/**</include>
                                 </includes>
                                 <systemPropertyVariables>
-                                    <system.ip>${system.ip}</system.ip>
-                                    <inventory.ip>${inventory.ip}</inventory.ip>
+                                    <system.kube.service>
+                                        ${system.kube.service}
+                                    </system.kube.service>
+                                    <inventory.kube.service>
+                                        ${inventory.kube.service}
+                                    </inventory.kube.service>
                                     <sys.http.port>
                                         ${sys.service.http.port}
                                     </sys.http.port>
