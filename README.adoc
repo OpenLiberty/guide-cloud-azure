@@ -484,7 +484,8 @@ kubernetes.yaml
 include::finish/kubernetes.yaml[]
 ----
 
-
+The [hotspot=sysImage hotspot=invImage file=0]`image` is the name and tag of the container image that you want 
+to use for the container.
 
 // =================================================================================================
 // Tear Down
