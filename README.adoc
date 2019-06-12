@@ -261,7 +261,8 @@ Once you login, you will see the following:
 Login Succeeded
 ----
 
-Your login credentials will be needed later, so keep your given password in mind. 
+Your login credentials will be needed later, so keep your given password in mind. View the credentials of your
+Azure container registry:
 
 [role=command]
 ```
@@ -349,6 +350,30 @@ docker push guide-registry.azurecr.io/inventory
 docker push guide-registry.azurecr.io/system
 ```
 
+=== Storing registry credentials in a secret
+
+To be able to pull the images from your Azure container registry, the credentials of your registry must be added to your service
+through a secret. 
+
+Use the `kubectl create secret docker-registry` command to create a secret to hold your registry credentials. 
+Replace `[password]` with the registry password thatyou viewed in the last section by running the 
+`az acr credential show -n guide-registry` command. The email that is associated with your Docker account should replace `[email-address]`.
+
+[role=command]
+```
+kubectl create secret docker-registry guide-secret \
+    --docker-server=guide-registry.azurecr.io \
+    --docker-username=guide-registry \
+    --docker-password=[password] \
+    --docker-email=[email-address]
+```
+The secret is successfully created with the following output:
+
+[role="no_copy"]
+----
+secret/guide-secret created
+----
+
 // =================================================================================================
 // Creating a Kubernetes cluster on AKS
 // =================================================================================================
@@ -370,18 +395,59 @@ and then stores them in the `~/.ssh` directory.
 
 The option `--node-count -c` could also be added to this `az aks create` command to create a cluster
 with a certain number of nodes in the Kubernetes node pool. By default, if this option is excluded,
-3 nodes will be assigned to the node pool.
+three nodes will be assigned to the node pool.
 
 An AKS cluster requires a service principal, which is a security credential that allows you to assign specific permissions
 for Azure resources accessed by applications and services. The `az aks create` command automatically generates a service principal to use 
 with your newly created cluster. However, in order to run this command, your Azure account must have permission access to create
 service principals. 
 
-Service principals can also be created manually. 
+Service principals can also be created manually with the `az ad sp create-for-rbac` command. This command outputs information about the
+service principal, including an `appId` and `password`.
+These two values can be passed into the `--service-principal` and `--client-secret` arguments in the cluster creation command, `az aks create`:
 
+[role=command]
+```
+az aks create \
+    -g guide-group \
+    -n guide-cluster \
+    --service-principal [appId] \
+    --client-secret [password]
+```
 
 Once the cluster is created, the command outputs information about the cluster.
 
+To view the credentials of your AKS cluster:
+
+[role=command]
+```
+az aks get-credentials -g guide-group -n guide-cluster
+```
+
+You will see an output similar to the following:
+
+[role="no_copy"]
+----
+Merged "guide-cluster" as current context in /Users/.kube/config
+----
+
+Run the following command to check the status of the available nodes in your AKS cluster:
+
+[role=command]
+```
+kubectl get nodes
+```
+
+The `kubectl get nodes` command outputs information about three nodes, as the cluster was created with the default number of nodes in a node pool.
+The `STATUS` of each node is in the `Ready` state. 
+
+[role="no_copy"]
+----
+NAME                       STATUS   ROLES   AGE     VERSION
+aks-nodepool1-21407934-0   Ready    agent   2m25s   v1.12.8
+aks-nodepool1-21407934-1   Ready    agent   2m48s   v1.12.8
+aks-nodepool1-21407934-2   Ready    agent   2m34s   v1.12.8
+----
 
 
 // =================================================================================================
