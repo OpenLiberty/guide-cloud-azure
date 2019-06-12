@@ -238,6 +238,7 @@ You will see an output similar to the following:
 In the `az acr create` command, the `-g` option specifies the resource group to designate to the container registry. 
 You created this resource group before as `guide-group`. The `-n` option specifies the name of the
 container registry to be created, which was defined as `guide-registry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
+
 The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
 These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
 storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
@@ -283,13 +284,112 @@ You will see an output similar to the following:
 ```
 
 // =================================================================================================
+// Uploading images to a container registry
+// =================================================================================================
+
+=== Building your Docker images
+
+The starting Java project, which you can find in the `start` directory, is a multi-module Maven
+project. It is made up of the `system` and `inventory` microservices. Each microservice resides in its own directory,
+`start/system` and `start/inventory`. Both of these directories contain a Dockerfile, which is necessary
+for building the Docker images.
+
+Navigate to the `start` directory and run the following command:
+
+[role=command]
+```
+mvn install
+```
+
+Now that your microservices are packaged, you will build your 
+Docker images using the `docker build` command. To build your image, you need to have Docker installed 
+and your Docker daemon started.
+
+Run the following commands to build and containerize the application:
+
+[role='command']
+```
+docker build -t system system/.
+docker build -t inventory inventory/.
+```
+
+To verify that the images are built, run the `docker images` command to list all local Docker images:
+
+[role='command']
+```
+docker images
+```
+
+Your two images `inventory` and `system` should appear in the list of all Docker images:
+
+[role="no_copy"]
+----
+REPOSITORY    TAG       IMAGE ID        CREATED          SIZE
+inventory     latest    08fef024e986    4 minutes ago    471MB
+system        latest    1dff6d0b4f31    5 minutes ago    470MB
+----
+
+=== Pushing the images to a container registry
+
+Pushing the images to a registry allows the cluster to create pods by using your container images.
+
+Tag your container images with your registry:
+
+[role=command]
+```
+docker tag inventory:latest guide-registry.azurecr.io/inventory
+docker tag system:latest guide-registry.azurecr.io/system
+```
+
+Finally, push your images to the registry:
+
+[role=command]
+```
+docker push guide-registry.azurecr.io/inventory
+docker push guide-registry.azurecr.io/system
+```
+
+// =================================================================================================
 // Creating a Kubernetes cluster on AKS
 // =================================================================================================
 
 == Creating a Kubernetes cluster on AKS
 
-=== 
+=== Provisioning a cluster
 
+To create your AKS cluster, use the `az aks create` cluster command:
+
+[role=command]
+```
+az aks create -g guide-group --name guide-cluster --generate-ssh-keys
+```
+
+Running this command creates an AKS cluster that is called `guide-cluster` with the resource group
+`guide-group`. The `--generate-ssh-keys` option creates `SSH` key files, if they are missing,
+and then stores them in the `~/.ssh` directory.
+
+The option `--node-count -c` could also be added to this `az aks create` command to create a cluster
+with a certain number of nodes in the Kubernetes node pool. By default, if this option is excluded,
+3 nodes will be assigned to the node pool.
+
+An AKS cluster requires a service principal, which is a security credential that allows you to assign specific permissions
+for Azure resources accessed by applications and services. The `az aks create` command automatically generates a service principal to use 
+with your newly created cluster. However, in order to run this command, your Azure account must have permission access to create
+service principals. 
+
+Service principals can also be created manually. 
+-
+
+When you use the az aks create command to generate the service principal automatically, 
+the service principal credentials are written to the file ~/.azure/aksServicePrincipal.json on the machine used to run the command.
+
+To manually create a service principal with the Azure CLI, use the az ad sp create-for-rbac command.
+Make a note of your own appId and password. These values are used when you create an AKS cluster in the next section.
+To use an existing service principal when you create an AKS cluster using the az aks create command, use the --service-principal and 
+--client-secret parameters to specify the appId and password from the output of the az ad sp create-for-rbac command:
+-
+
+Once the cluster is created, the command outputs information about the cluster.
 
 
 
