@@ -20,6 +20,7 @@
 :page-seo-description: Find out how to deploy an app to Azure Kubernetes Service
 :page-guide-category: microprofile
 :guide-author: Open Liberty
+:page-essential: false
 = Deploying microservices to Azure Kubernetes Service
 
 [.hidden]
@@ -155,7 +156,7 @@ The `name` column specifies the region name that you will be using to create you
 
 You will see an output similar to the following:
 
-[source, role="no_copy"]
+[role="no_copy"]
 ----
 DisplayName          Latitude    Longitude    Name
 -------------------  ----------  -----------  ------------------
