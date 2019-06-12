@@ -378,16 +378,7 @@ with your newly created cluster. However, in order to run this command, your Azu
 service principals. 
 
 Service principals can also be created manually. 
--
 
-When you use the az aks create command to generate the service principal automatically, 
-the service principal credentials are written to the file ~/.azure/aksServicePrincipal.json on the machine used to run the command.
-
-To manually create a service principal with the Azure CLI, use the az ad sp create-for-rbac command.
-Make a note of your own appId and password. These values are used when you create an AKS cluster in the next section.
-To use an existing service principal when you create an AKS cluster using the az aks create command, use the --service-principal and 
---client-secret parameters to specify the appId and password from the output of the az ad sp create-for-rbac command:
--
 
 Once the cluster is created, the command outputs information about the cluster.
 
