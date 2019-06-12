@@ -79,32 +79,34 @@ in different isolated containers.
 
 Before you begin, the following tools need to be installed:
 
-- *Docker:* You need a containerization software for building containers. Kubernetes 
+* *Docker:* You need a containerization software for building containers. Kubernetes 
 supports various container types, but you will use Docker in this guide. For installation 
 instructions, refer to the official https://docs.docker.com/install/[Docker^] documentation.
 
-- *Azure Subscription:* To run this guide, you will need an Azure subscription. Navigate to the 
+* *Azure Subscription:* To run this guide, you will need an Azure subscription. Navigate to the 
 https://azure.microsoft.com/en-us/pricing/purchase-options/pay-as-you-go/[Microsoft Azure Purchase Options] 
 to create an account with your email and start a Pay-As-You-Go subscription. 
 
-- *Azure CLI:* You will need to use the Azure Command Line Interface (CLI). See the official
+* *Azure CLI:* You will need to use the Azure Command Line Interface (CLI). See the official
 https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest[Install the Azure CLI^]
 documentation for information about setting up the Azure CLI for your platform.
 
-    To verify that the Azure CLI is installed correctly, run the following command:
-    
-    [role=command]
-    ```
-    az --version
-    ```
++
+** To verify that the Azure CLI is installed correctly, run the following command:
++
+[role=command]
+```
+az --version
+```
 
-- *kubectl:* You need the Kubernetes command-line tool `kubectl` to interact with your Kubernetes cluster.
+* *kubectl:* You need the Kubernetes command-line tool `kubectl` to interact with your Kubernetes cluster.
 Use the Azure CLI to download and install `kubectl` with the following command:
 
-    [role=command]
-    ```
-    az aks install-cli
-    ```
++
+[role=command]
+```
+az aks install-cli
+```
 
 To begin this guide, make sure that you are logged in to Azure to get access to your subscription:
 
@@ -116,8 +118,6 @@ az login
 // =================================================================================================
 // Getting started
 // =================================================================================================
-
-== Getting started
 
 [role=command]
 include::{common-includes}/gitclone.adoc[]
