@@ -15,11 +15,11 @@ spec:
     spec:
       containers:
       - name: system-container
-        image: registrynim.azurecr.io/system:1.0
+        image: guide-registry.azurecr.io/system:1.0
         ports:
         - containerPort: 9080
       imagePullSecrets:
-      - name: nimjustsecret
+      - name: guide-secret
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,11 +38,11 @@ spec:
     spec:
       containers:
       - name: inventory-container
-        image: registrynim.azurecr.io/inventory:1.0
+        image: guide-registry.azurecr.io/inventory:1.0
         ports:
         - containerPort: 9081
       imagePullSecrets:
-      - name: nimjustsecret
+      - name: guide-secret
 ---
 apiVersion: v1
 kind: Service

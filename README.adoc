@@ -117,6 +117,8 @@ az login
 // Getting started
 // =================================================================================================
 
+== Getting started
+
 [role=command]
 include::{common-includes}/gitclone.adoc[]
 
@@ -289,6 +291,8 @@ You will see an output similar to the following:
 // Uploading images to a container registry
 // =================================================================================================
 
+== Uploading images to a container registry
+
 === Building your Docker images
 
 The starting Java project, which you can find in the `start` directory, is a multi-module Maven
@@ -449,6 +453,37 @@ aks-nodepool1-21407934-0   Ready    agent   2m25s   v1.12.8
 aks-nodepool1-21407934-1   Ready    agent   2m48s   v1.12.8
 aks-nodepool1-21407934-2   Ready    agent   2m34s   v1.12.8
 ----
+
+// =================================================================================================
+// Deploying microservices to AKS
+// =================================================================================================
+
+== Deploying microservices to AKS
+
+=== Creating a deployment definition
+
+Now that your container images are built, you can deploy them using a Kubernetes resource definition.
+
+A Kubernetes resource definition is a `yaml` file that contains a description of all your 
+deployments, services, or any other resources that you want to deploy. All resources can 
+also be deleted from the cluster by using the same `yaml` file that you used to deploy them.
+The `kubernetes.yaml` resource definition file is provided for you. If you are interested 
+in learning more about the Kubernetes resource definition, check out the 
+https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^]
+guide.
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `kubernetes.yaml`.#
+`kubernetes.yaml`
+----
+
+kubernetes.yaml
+[source, Text, linenums, indent=0, role="code_column"]
+----
+include::finish/kubernetes.yaml[]
+----
+
 
 
 // =================================================================================================
