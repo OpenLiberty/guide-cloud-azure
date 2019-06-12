@@ -20,8 +20,10 @@ spec:
         # end::sysImage[]
         ports:
         - containerPort: 9080
+      # tag::sysSecret[]
       imagePullSecrets:
       - name: guide-secret
+      # end::sysSecret[]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -45,8 +47,10 @@ spec:
         # end::invImage[]
         ports:
         - containerPort: 9081
+      # tag::invSecret[]
       imagePullSecrets:
       - name: guide-secret
+      # end::invSecret[]
 ---
 apiVersion: v1
 kind: Service

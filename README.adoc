@@ -467,7 +467,7 @@ Now that your container images are built, you can deploy them using a Kubernetes
 A Kubernetes resource definition is a `yaml` file that contains a description of all your 
 deployments, services, or any other resources that you want to deploy. All resources can 
 also be deleted from the cluster by using the same `yaml` file that you used to deploy them.
-The `kubernetes.yaml` resource definition file is provided for you. If you are interested 
+The [hotspot]`kubernetes.yaml` resource definition file is provided for you. If you are interested 
 in learning more about the Kubernetes resource definition, check out the 
 https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^]
 guide.
@@ -485,7 +485,61 @@ include::finish/kubernetes.yaml[]
 ----
 
 The [hotspot=sysImage hotspot=invImage file=0]`image` is the name and tag of the container image that you want 
-to use for the container.
+to use for the container. The [hotspot]`kubernetes.yaml` file references the images that you pushed to `guide-registry`
+for the [hotspot=sysImage file=0]`system` and [hotspot=invImage file=0]`inventory` repositories. These images can be pulled
+with the [hotspot=sysSecret hotspot=invSecret file=0]`secret` that you defined before.
+
+=== Deploying your application
+
+In order to deploy your microservices to Azure Kubernetes Service, you need Kubernetes to create
+the contents of the [hotspot]`kubernetes.yaml` file. 
+
+Run the following command to deploy the resources defined in [hotspot]`kubernetes.yaml`:
+
+[role='command']
+```
+kubectl create -f kubernetes.yaml
+```
+
+You will see an output similar to the following:
+
+[role="no_copy"]
+----
+deployment.apps/system-deployment created
+deployment.apps/inventory-deployment created
+service/system-service created
+service/inventory-service created
+----
+
+Run the following command to check the status of your pods:
+[role='command']
+```
+kubectl get pods
+```
+
+If all the pods are healthy and running, you see an output similar to the following:
+[role="no_copy"]
+----
+NAME                                    READY     STATUS    RESTARTS   AGE
+system-deployment-6bd97d9bf6-4ccds      1/1       Running   0          15s
+inventory-deployment-645767664f-nbtd9   1/1       Running   0          15s
+----
+
+=== Making requests to the microservices
+
+You will need the external IP addresses associated with `system` and `inventory` to try out your microservices.
+
+Take note of the `EXTERNAL-IP` in the output of the following commands. It is the 
+hostname you will later substitute into `[hostname]`.
+
+[role='command']
+```
+kubectl get service/system-service -w
+kubectl get service/inventory-service -w
+```
+
+In y
+
 
 // =================================================================================================
 // Tear Down
