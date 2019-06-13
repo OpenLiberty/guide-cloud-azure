@@ -592,7 +592,7 @@ pom.xml
 include::finish/pom.xml[tags=**]
 ----
 
-The default properties that are defined in the [hotspot]`pom.xml` file are:
+The default properties that are defined in the [hotspot file=3]`pom.xml` file are:
 
 [cols="15, 100", options="header"]
 |===
@@ -607,7 +607,7 @@ You can test the basic functionality of your microservices. If a test failure
 occurs, then you might have introduced a bug into the code. To run the tests, wait for all pods to be
 in the ready state before you proceed further. 
 
-[role="code_command hotspot file=0", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
 #Create the `SystemEndpointTest` class.#
 `system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java`
@@ -619,9 +619,9 @@ SystemEndpointTest.java
 include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
 ----
 
-The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
+The [hotspot=testGetProperties file=1]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
 
-[role="code_command hotspot file=1", subs="quotes"]
+[role="code_command hotspot file=2", subs="quotes"]
 ----
 #Create the `InventoryEndpointTest` class.#
 `inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java`
@@ -633,12 +633,12 @@ InventoryEndpointTest.java
 include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
 ----
 
-* The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
-* The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
-* The [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
-* The [hotspot=testUnknownHost file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
-* The [hotspot=sysServiceIp file=1]`systemServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `system` service. This value will also be passed in when you run the tests. 
-* The [hotspot=invServiceIp file=1]`inventoryServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `inventory` service. This value will also be passed in when you run the tests. 
+* The [hotspot=testEmptyInventory file=2]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
+* The [hotspot=testHostRegistration file=2]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
+* The [hotspot=testSystemPropertiesMatch file=2]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
+* The [hotspot=testUnknownHost file=2]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
+* The [hotspot=sysServiceIp file=2]`systemServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `system` service. This value will also be passed in when you run the tests. 
+* The [hotspot=invServiceIp file=2]`inventoryServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `inventory` service. This value will also be passed in when you run the tests. 
 
 === Running the tests
 
