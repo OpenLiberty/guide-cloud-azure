@@ -631,7 +631,7 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 * The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
 * The [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
 * The [hotspot=testUnknownHost file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
-* The [hotspot=sysServiceIp file=1]`systemServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the`system` service. This value will also be passed in when you run the tests. 
+* The [hotspot=sysServiceIp file=1]`systemServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `system` service. This value will also be passed in when you run the tests. 
 * The [hotspot=invServiceIp file=1]`inventoryServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `inventory` service. This value will also be passed in when you run the tests. 
 
 === Running the tests
@@ -687,26 +687,29 @@ by running the `kubectl delete` command:
 kubectl delete -f kubernetes.yaml
 ```
 
-Since you are done testing your cluster, clean up all of its related sources using the `az group delete` command.  
+Since you are done testing your cluster, clean up all of its related sources using the `az group delete` command.
+This command will remove the resource group, container service, and all related resources.
+However, deleting an AKS cluster does not delete the service principal that was automatically created and linked with your cluster. 
+
+Get the `client-Id` of the service principal from the `az aks show` command, and then delete the service principal:
 
 [role='command']
 ```
-az aks list --resource-group guide-group
+az aks show -g guide-group -n guide-cluster --query servicePrincipalProfile.clientId -o tsv
 ```
-
-[role='command']
-```
-az group delete --name guide-group --yes --no-wait
-```
-This command removes the resource group, container service, and all related resources
-
-
-
 
 [role='command']
 ```
 az ad sp delete --id [servicePrincipalProfile-clientId]
 ```
+
+Delete the rest of your Azure resources:
+
+[role='command']
+```
+az group delete --name guide-group --yes --no-wait
+```
+
 // =================================================================================================
 // finish
 // =================================================================================================
