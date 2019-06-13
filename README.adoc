@@ -210,7 +210,7 @@ With the Azure `az acr` command, create an Azure Container Registry.
 
 [role=command]
 ```
-az acr create -g guide-group -n guide-registry --sku Basic --admin-enabled
+az acr create -g guide-group -n guideregistry --sku Basic --admin-enabled
 ```
 
 You will see an output similar to the following:
@@ -220,10 +220,10 @@ You will see an output similar to the following:
 {
   "adminUserEnabled": true,
   "creationDate": "2019-06-05T20:28:09.637994+00:00",
-  "id": "/subscriptions/[subscription-id]/resourceGroups/guide-group/providers/Microsoft.ContainerRegistry/registries/guide-registry",
+  "id": "/subscriptions/[subscription-id]/resourceGroups/guide-group/providers/Microsoft.ContainerRegistry/registries/guideregistry",
   "location": "[location]",
-  "loginServer": "guide-registry.azurecr.io",
-  "name": "guide-registry",
+  "loginServer": "guideregistry.azurecr.io",
+  "name": "guideregistry",
   "networkRuleSet": null,
   "provisioningState": "Succeeded",
   "resourceGroup": "guide-group",
@@ -240,13 +240,13 @@ You will see an output similar to the following:
 
 In the `az acr create` command, the `-g` option specifies the resource group to designate to the container registry. 
 You created this resource group before as `guide-group`. The `-n` option specifies the name of the
-container registry to be created, which was defined as `guide-registry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
+container registry to be created, which was defined as `guideregistry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
 
 The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
 These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
 storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
 
-Your container registry has a server name of `guide-registry.azurecr.io`. 
+Your container registry has a server name of `guideregistry.azurecr.io`. 
 
 === Logging into the container registry
 
@@ -254,7 +254,7 @@ You must log into your Azure Container Registry using the Azure CLI, in order to
 
 [role=command]
 ```
-az acr login -n guide-registry
+az acr login -n guideregistry
 ```
 
 Once you login, you will see the following:
@@ -269,7 +269,7 @@ Azure container registry:
 
 [role=command]
 ```
-az acr credential show -n guide-registry
+az acr credential show -n guideregistry
 ```
 
 You will see an output similar to the following:
@@ -283,7 +283,7 @@ You will see an output similar to the following:
       "value": "[password]"
     },
   ],
-  "username": "guide-registry"
+  "username": "guideregistry"
 }
 ```
 
@@ -343,16 +343,16 @@ Tag your container images with your registry:
 
 [role=command]
 ```
-docker tag inventory:latest guide-registry.azurecr.io/inventory
-docker tag system:latest guide-registry.azurecr.io/system
+docker tag inventory:latest guideregistry.azurecr.io/inventory
+docker tag system:latest guideregistry.azurecr.io/system
 ```
 
 Finally, push your images to the registry:
 
 [role=command]
 ```
-docker push guide-registry.azurecr.io/inventory
-docker push guide-registry.azurecr.io/system
+docker push guideregistry.azurecr.io/inventory
+docker push guideregistry.azurecr.io/system
 ```
 
 === Storing registry credentials in a secret
@@ -362,13 +362,13 @@ through a secret.
 
 Use the `kubectl create secret docker-registry` command to create a secret to hold your registry credentials. 
 Replace `[password]` with the registry password thatyou viewed in the last section by running the 
-`az acr credential show -n guide-registry` command. The email that is associated with your Docker account should replace `[email-address]`.
+`az acr credential show -n guideregistry` command. The email that is associated with your Docker account should replace `[email-address]`.
 
 [role=command]
 ```
 kubectl create secret docker-registry guide-secret \
-    --docker-server=guide-registry.azurecr.io \
-    --docker-username=guide-registry \
+    --docker-server=guideregistry.azurecr.io \
+    --docker-username=guideregistry \
     --docker-password=[password] \
     --docker-email=[email-address]
 ```
@@ -485,7 +485,7 @@ include::finish/kubernetes.yaml[]
 ----
 
 The [hotspot=sysImage hotspot=invImage file=0]`image` is the name and tag of the container image that you want 
-to use for the container. The [hotspot]`kubernetes.yaml` file references the images that you pushed to `guide-registry`
+to use for the container. The [hotspot]`kubernetes.yaml` file references the images that you pushed to `guideregistry`
 for the [hotspot=sysImage file=0]`system` and [hotspot=invImage file=0]`inventory` repositories. These images can be pulled
 with the [hotspot=sysSecret hotspot=invSecret file=0]`secret` that you defined before.
 
