@@ -586,6 +586,12 @@ you see a new entry for `[system-EXTERNAL-IP]`.
 
 == Testing the microservices
 
+pom.xml
+[source, xml, linenums, role='code_column']
+----
+include::finish/pom.xml[tags=**]
+----
+
 The default properties that are defined in the [hotspot]`pom.xml` file are:
 
 [cols="15, 100", options="header"]
