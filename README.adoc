@@ -603,19 +603,6 @@ in the ready state before you proceed further.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Create the `kubernetes.yaml`.#
-`kubernetes.yaml`
-----
-
-kubernetes.yaml
-[source, Text, linenums, indent=0, role="code_column"]
-----
-include::finish/kubernetes.yaml[]
-----
-
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
 #Create the `SystemEndpointTest` class.#
 `system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java`
 ----
@@ -624,6 +611,7 @@ SystemEndpointTest.java
 [source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
 ----
 include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
+----
 
 The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
 
