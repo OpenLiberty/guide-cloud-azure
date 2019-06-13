@@ -25,13 +25,21 @@
         <version.maven-failsafe-plugin>3.0.0-M1</version.maven-failsafe-plugin>
         <!-- OpenLiberty runtime -->
         <version.openliberty-runtime>RELEASE</version.openliberty-runtime>
+        <!-- tag::sysHttpPort -->
         <sys.service.http.port>9080</sys.service.http.port>
+        <!-- end::sysHttpPort -->
         <sys.service.https.port>9443</sys.service.https.port>
+        <!-- tag::invHttpPort -->
         <inv.service.http.port>9081</inv.service.http.port>
+        <!-- enf::invHttpPort -->
         <inv.service.https.port>9444</inv.service.https.port>
         <!-- Default test properties -->
+        <!-- tag::sysKubeService -->
         <system.kube.service>system-service</system.kube.service>
+        <!-- end::sysKubeService -->
+        <!-- tag::invKubeService -->
         <inventory.kube.service>inventory-service</inventory.kube.service>
+        <!-- end::invKubeService -->
     </properties>
 
     <!-- Shared dependencies. -->

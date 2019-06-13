@@ -34,8 +34,8 @@ Learn how to deploy your microservices application to Azure Kubernetes Service (
 :win: WINDOWS
 :mac: MAC
 :linux: LINUX
-:system-api: http://[hostname]:9080/system/properties
-:inventory-api: http://[hostname]:9081/inventory/systems
+:system-api: http://[system-EXTERNAL-IP]:9080/system/properties
+:inventory-api: http://[inventory-EXTERNAL-IP]:9081/inventory/systems
 
 
 // =================================================================================================
@@ -538,8 +538,139 @@ kubectl get service/system-service -w
 kubectl get service/inventory-service -w
 ```
 
-In y
+The `-w` argument watches for changes about the service.
 
+You will need to wait a while for the `EXTERNAL-IP` to change from `<pending>` to an IP address.
+
+[role="no_copy"]
+----
+NAME             TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
+system-service   LoadBalancer   10.0.27.66   <pending>     9080:32436/TCP   26s
+----
+
+[role="no_copy"]
+----
+NAME                TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+inventory-service   LoadBalancer   10.0.103.223   <pending>     9081:32739/TCP   69s
+----
+
+Once the `EXTERNAL-IP` appears, press `CTRL-C` for kubectl to stop watching the services. 
+
+[role="no_copy"]
+----
+system-service   LoadBalancer   10.0.27.66   23.99.223.10   9080:32436/TCP   74s
+----
+
+[role="no_copy"]
+----
+inventory-service   LoadBalancer   10.0.103.223   168.61.174.136   9081:32739/TCP   2m8s
+----
+
+To access the application and your microservices, point your browser to the following URLs, substituting the appropriate hostnames
+for the `system` and `inventory` services:
+
+- `{inventory-api}`
+- `{system-api}`
+
+The first URL returns an empty list is expected because no system properties are stored in the inventory yet. 
+
+In the second URL, you see a result in JSON format with the system properties of your local JVM.
+
+Point your browser to the `{inventory-api}/[system-EXTERNAL-IP] URL. When you visit this URL, these system
+properties are automatically stored in the inventory. Go back to `{inventory-api}` and
+you see a new entry for `[system-EXTERNAL-IP]`.
+
+// =================================================================================================
+// Testing the microservices
+// =================================================================================================
+
+== Testing the microservices
+
+The default properties that are defined in the [hotspot]`pom.xml` file are:
+
+[cols="15, 100", options="header"]
+|===
+| *Property*                      | *Description*
+| [hotspot=sysKubeService]`system.kube.service` | Name of the {kube} Service wrapping the `system` pods, `system-service` by default.
+| [hotspot=invKubeService]`inventory.kube.service` | Name of the {kube} Service wrapping the `inventory` pods, `inventory-service` by default.
+| [hotspot=sysHttpPort]`sys.service.http.port`    | The HTTP port for the {kube} Service `system-service`, 9080 by default.
+| [hotspot=invHttpPort]`inv.service.http.port`    | The HTTP port of the {kube} Service `inventory-service`, 9081 by default.
+|===
+
+You can test the basic functionality of your microservices. If a test failure
+occurs, then you might have introduced a bug into the code. To run the tests, wait for all pods to be
+in the ready state before you proceed further. 
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `SystemEndpointTest` class.#
+`system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java`
+----
+
+SystemEndpointTest.java
+[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
+----
+include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
+
+The [hotspot=testGetProperties file=0]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
+
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Create the `InventoryEndpointTest` class.#
+`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java`
+----
+
+InventoryEndpointTest.java
+[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
+----
+include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
+----
+
+* The [hotspot=testEmptyInventory file=1]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
+* The [hotspot=testHostRegistration file=1]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
+* The [hotspot=testSystemPropertiesMatch file=1]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
+* The [hotspot=testUnknownHost file=1]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
+* The [hotspot=sysServiceIp file=1]`systemServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the`system` service. This value will also be passed in when you run the tests. 
+* The [hotspot=invServiceIp file=1]`inventoryServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `inventory` service. This value will also be passed in when you run the tests. 
+
+=== Running the tests
+
+Run the Maven `verify` goal to test your microservices by replacing the `[system-EXTERNAL-IP]` with the value determined in the previous section.
+
+[role='command']
+```
+mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-EXTERNAL-IP]
+```
+
+The `dockerfile.skip` parameter is set to `true` to skip building a new container image.
+
+If the tests pass, you will see an output similar to the following for each service:
+
+[role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.system.SystemEndpointTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.673 sec - in it.io.openliberty.guides.system.SystemEndpointTest
+
+Results:
+
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+----
+
+[role="no_copy"]
+----
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running it.io.openliberty.guides.inventory.InventoryEndpointTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.222 sec - in it.io.openliberty.guides.inventory.InventoryEndpointTest
+
+Results:
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+----
 
 // =================================================================================================
 // Tear Down
@@ -547,7 +678,22 @@ In y
 
 == Tearing down the environment
 
+When you have finished testing your cluster, clean up all of your resources.
 
+[role='command']
+```
+az group delete --name guide-group --yes --no-wait
+```
+
+[role='command']
+```
+az aks list --resource-group <your-resouece-group>
+```
+
+[role='command']
+```
+az ad sp delete --id [servicePrincipalProfile-clientId]
+```
 // =================================================================================================
 // finish
 // =================================================================================================

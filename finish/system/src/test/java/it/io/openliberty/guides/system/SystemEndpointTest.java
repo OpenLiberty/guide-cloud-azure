@@ -31,7 +31,7 @@ import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
 public class SystemEndpointTest {
 
     private static String url;
-    private static String sysKubeServiceIp;
+    private static String systemServiceIp;
 
     private Client client;
     private Response response;
@@ -39,8 +39,8 @@ public class SystemEndpointTest {
     @BeforeClass
     public static void oneTimeSetup() {
         String port = System.getProperty("sys.http.port");
-        sysKubeServiceIp = System.getProperty("system.kube.service");
-        url = "http://" + sysKubeServiceIp + ":" + port + "/system/properties/";
+        systemServiceIp = System.getProperty("system.kube.service");
+        url = "http://" + systemServiceIp + ":" + port + "/system/properties/";
     }
     
     @Before
