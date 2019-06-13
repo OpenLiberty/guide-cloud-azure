@@ -576,7 +576,7 @@ The first URL returns an empty list is expected because no system properties are
 
 In the second URL, you see a result in JSON format with the system properties of your local JVM.
 
-Point your browser to the `{inventory-api}/[system-EXTERNAL-IP] URL. When you visit this URL, these system
+Point your browser to the `{inventory-api}/[system-EXTERNAL-IP]` URL. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to `{inventory-api}` and
 you see a new entry for `[system-EXTERNAL-IP]`.
 
@@ -600,6 +600,19 @@ The default properties that are defined in the [hotspot]`pom.xml` file are:
 You can test the basic functionality of your microservices. If a test failure
 occurs, then you might have introduced a bug into the code. To run the tests, wait for all pods to be
 in the ready state before you proceed further. 
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `kubernetes.yaml`.#
+`kubernetes.yaml`
+----
+
+kubernetes.yaml
+[source, Text, linenums, indent=0, role="code_column"]
+----
+include::finish/kubernetes.yaml[]
+----
+
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -673,22 +686,34 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 ----
 
 // =================================================================================================
-// Tear Down
+// Tearing down the environment
 // =================================================================================================
 
 == Tearing down the environment
 
-When you have finished testing your cluster, clean up all of your resources.
+When you no longer need your deployed microservices, you can delete all {kube} resources 
+by running the `kubectl delete` command:
+
+[role='command']
+```
+kubectl delete -f kubernetes.yaml
+```
+
+Since you are done testing your cluster, clean up all of its related sources using the `az group delete` command.  
+
+[role='command']
+```
+az aks list --resource-group guide-group
+```
 
 [role='command']
 ```
 az group delete --name guide-group --yes --no-wait
 ```
+This command removes the resource group, container service, and all related resources
 
-[role='command']
-```
-az aks list --resource-group <your-resouece-group>
-```
+
+
 
 [role='command']
 ```
@@ -699,3 +724,12 @@ az ad sp delete --id [servicePrincipalProfile-clientId]
 // =================================================================================================
 
 == Great work! You're done!
+
+You have just deployed two microservices running in Open Liberty to Azure Kubernetes Service (AKS). You also 
+learned how to use `kubectl` to deploy your microservices on a {kube} cluster.
+
+// Multipane
+include::{common-includes}/attribution.adoc[subs="attributes"]
+
+// DO NO CREATE ANYMORE SECTIONS AT THIS POINT
+// Related guides will be added in automatically here if you included them in ":page-related-guides"
