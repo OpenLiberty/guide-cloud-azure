@@ -183,7 +183,7 @@ Create a resource group and replace `[location]` with a region that is available
 
 [role=command]
 ```
-az group create -l [location] -n guide-group
+az group create -l [location] -n guideGroup
 ```
 
 You will see an output similar to the following:
@@ -191,10 +191,10 @@ You will see an output similar to the following:
 [source, role="no_copy"]
 ```
 {
-  "id": "/subscriptions/[subscription-id]/resourceGroups/guide-group",
+  "id": "/subscriptions/[subscription-id]/resourceGroups/guideGroup",
   "location": "[location]",
   "managedBy": null,
-  "name": "guide-group",
+  "name": "guideGroup",
   "properties": {
     "provisioningState": "Succeeded"
   },
@@ -210,7 +210,7 @@ With the Azure `az acr` command, create an Azure Container Registry.
 
 [role=command]
 ```
-az acr create -g guide-group -n guideregistry --sku Basic --admin-enabled
+az acr create -g guideGroup -n guideRegistry --sku Basic --admin-enabled
 ```
 
 You will see an output similar to the following:
@@ -220,13 +220,13 @@ You will see an output similar to the following:
 {
   "adminUserEnabled": true,
   "creationDate": "2019-06-05T20:28:09.637994+00:00",
-  "id": "/subscriptions/[subscription-id]/resourceGroups/guide-group/providers/Microsoft.ContainerRegistry/registries/guideregistry",
+  "id": "/subscriptions/[subscription-id]/resourceGroups/guideGroup/providers/Microsoft.ContainerRegistry/registries/guideRegistry",
   "location": "[location]",
-  "loginServer": "guideregistry.azurecr.io",
-  "name": "guideregistry",
+  "loginServer": "guideRegistry.azurecr.io",
+  "name": "guideRegistry",
   "networkRuleSet": null,
   "provisioningState": "Succeeded",
-  "resourceGroup": "guide-group",
+  "resourceGroup": "guideGroup",
   "sku": {
     "name": "Basic",
     "tier": "Basic"
@@ -239,14 +239,14 @@ You will see an output similar to the following:
 ```
 
 In the `az acr create` command, the `-g` option specifies the resource group to designate to the container registry. 
-You created this resource group before as `guide-group`. The `-n` option specifies the name of the
-container registry to be created, which was defined as `guideregistry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
+You created this resource group before as `guideGroup`. The `-n` option specifies the name of the
+container registry to be created, which was defined as `guideRegistry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
 
 The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
 These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
 storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
 
-Your container registry has a server name of `guideregistry.azurecr.io`. 
+Your container registry has a server name of `guideRegistry.azurecr.io`. 
 
 === Logging into the container registry
 
@@ -254,7 +254,7 @@ You must log into your Azure Container Registry using the Azure CLI, in order to
 
 [role=command]
 ```
-az acr login -n guideregistry
+az acr login -n guideRegistry
 ```
 
 Once you login, you will see the following:
@@ -269,7 +269,7 @@ Azure container registry:
 
 [role=command]
 ```
-az acr credential show -n guideregistry
+az acr credential show -n guideRegistry
 ```
 
 You will see an output similar to the following:
@@ -283,7 +283,7 @@ You will see an output similar to the following:
       "value": "[password]"
     },
   ],
-  "username": "guideregistry"
+  "username": "guideRegistry"
 }
 ```
 
@@ -343,41 +343,17 @@ Tag your container images with your registry:
 
 [role=command]
 ```
-docker tag inventory:latest guideregistry.azurecr.io/inventory
-docker tag system:latest guideregistry.azurecr.io/system
+docker tag inventory:latest guideRegistry.azurecr.io/inventory
+docker tag system:latest guideRegistry.azurecr.io/system
 ```
 
 Finally, push your images to the registry:
 
 [role=command]
 ```
-docker push guideregistry.azurecr.io/inventory
-docker push guideregistry.azurecr.io/system
+docker push guideRegistry.azurecr.io/inventory
+docker push guideRegistry.azurecr.io/system
 ```
-
-=== Storing registry credentials in a secret
-
-To be able to pull the images from your Azure container registry, the credentials of your registry must be added to your service
-through a secret. 
-
-Use the `kubectl create secret docker-registry` command to create a secret to hold your registry credentials. 
-Replace `[password]` with the registry password thatyou viewed in the last section by running the 
-`az acr credential show -n guideregistry` command. The email that is associated with your Docker account should replace `[email-address]`.
-
-[role=command]
-```
-kubectl create secret docker-registry guide-secret \
-    --docker-server=guideregistry.azurecr.io \
-    --docker-username=guideregistry \
-    --docker-password=[password] \
-    --docker-email=[email-address]
-```
-The secret is successfully created with the following output:
-
-[role="no_copy"]
-----
-secret/guide-secret created
-----
 
 // =================================================================================================
 // Creating a Kubernetes cluster on AKS
@@ -387,15 +363,16 @@ secret/guide-secret created
 
 === Provisioning a cluster
 
-To create your AKS cluster, use the `az aks create` cluster command:
+To create your AKS cluster, use the `az aks create` cluster command. You might need to wait a while your
+cluster is being created.
 
 [role=command]
 ```
-az aks create -g guide-group --name guide-cluster --generate-ssh-keys
+az aks create -g guideGroup --name guideCluster --generate-ssh-keys
 ```
 
-Running this command creates an AKS cluster that is called `guide-cluster` with the resource group
-`guide-group`. The `--generate-ssh-keys` option creates `SSH` key files, if they are missing,
+Running this command creates an AKS cluster that is called `guideCluster` with the resource group
+`guideGroup`. The `--generate-ssh-keys` option creates `SSH` key files, if they are missing,
 and then stores them in the `~/.ssh` directory.
 
 The option `--node-count -c` could also be added to this `az aks create` command to create a cluster
@@ -414,8 +391,8 @@ These two values can be passed into the `--service-principal` and `--client-secr
 [role=command]
 ```
 az aks create \
-    -g guide-group \
-    -n guide-cluster \
+    -g guideGroup \
+    -n guideCluster \
     --service-principal [appId] \
     --client-secret [password]
 ```
@@ -426,14 +403,14 @@ To view the credentials of your AKS cluster:
 
 [role=command]
 ```
-az aks get-credentials -g guide-group -n guide-cluster
+az aks get-credentials -g guideGroup -n guideCluster
 ```
 
 You will see an output similar to the following:
 
 [role="no_copy"]
 ----
-Merged "guide-cluster" as current context in /Users/.kube/config
+Merged "guideCluster" as current context in /Users/.kube/config
 ----
 
 Run the following command to check the status of the available nodes in your AKS cluster:
@@ -452,6 +429,30 @@ NAME                       STATUS   ROLES   AGE     VERSION
 aks-nodepool1-21407934-0   Ready    agent   2m25s   v1.12.8
 aks-nodepool1-21407934-1   Ready    agent   2m48s   v1.12.8
 aks-nodepool1-21407934-2   Ready    agent   2m34s   v1.12.8
+----
+
+=== Storing registry credentials in a secret
+
+To be able to pull the images from your Azure container registry, the credentials of your registry must be added to your service
+through a secret. 
+
+Use the `kubectl create secret docker-registry` command to create a secret to hold your registry credentials. 
+Replace `[password]` with the registry password thatyou viewed in the last section by running the 
+`az acr credential show -n guideRegistry` command. The email that is associated with your Docker account should replace `[email-address]`.
+
+[role=command]
+```
+kubectl create secret docker-registry guideSecret \
+    --docker-server=guideRegistry.azurecr.io \
+    --docker-username=guideRegistry \
+    --docker-password=[password] \
+    --docker-email=[email-address]
+```
+The secret is successfully created with the following output:
+
+[role="no_copy"]
+----
+secret/guideSecret created
 ----
 
 // =================================================================================================
@@ -485,7 +486,7 @@ include::finish/kubernetes.yaml[]
 ----
 
 The [hotspot=sysImage hotspot=invImage file=0]`image` is the name and tag of the container image that you want 
-to use for the container. The [hotspot]`kubernetes.yaml` file references the images that you pushed to `guideregistry`
+to use for the container. The [hotspot]`kubernetes.yaml` file references the images that you pushed to `guideRegistry`
 for the [hotspot=sysImage file=0]`system` and [hotspot=invImage file=0]`inventory` repositories. These images can be pulled
 with the [hotspot=sysSecret hotspot=invSecret file=0]`secret` that you defined before.
 
@@ -703,7 +704,7 @@ Get the `client-Id` of the service principal from the `az aks show` command, and
 
 [role='command']
 ```
-az aks show -g guide-group -n guide-cluster --query servicePrincipalProfile.clientId -o tsv
+az aks show -g guideGroup -n guideCluster --query servicePrincipalProfile.clientId -o tsv
 ```
 
 [role='command']
@@ -715,7 +716,7 @@ Delete the rest of your Azure resources:
 
 [role='command']
 ```
-az group delete --name guide-group --yes --no-wait
+az group delete --name guideGroup --yes --no-wait
 ```
 
 // =================================================================================================

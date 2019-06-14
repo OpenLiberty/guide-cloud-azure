@@ -16,13 +16,13 @@ spec:
       containers:
       - name: system-container
         # tag::sysImage[]
-        image: guideregistry.azurecr.io/system
+        image: guideRegistry.azurecr.io/system
         # end::sysImage[]
         ports:
         - containerPort: 9080
       # tag::sysSecret[]
       imagePullSecrets:
-      - name: guide-secret
+      - name: guideSecret
       # end::sysSecret[]
 ---
 apiVersion: apps/v1
@@ -43,13 +43,13 @@ spec:
       containers:
       - name: inventory-container
         # tag::invImage[]
-        image: guideregistry.azurecr.io/inventory
+        image: guideRegistry.azurecr.io/inventory
         # end::invImage[]
         ports:
         - containerPort: 9081
       # tag::invSecret[]
       imagePullSecrets:
-      - name: guide-secret
+      - name: guideSecret
       # end::invSecret[]
 ---
 apiVersion: v1
