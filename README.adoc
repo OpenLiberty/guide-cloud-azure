@@ -222,7 +222,7 @@ You will see an output similar to the following:
   "creationDate": "2019-06-05T20:28:09.637994+00:00",
   "id": "/subscriptions/[subscription-id]/resourceGroups/guideGroup/providers/Microsoft.ContainerRegistry/registries/guideRegistry",
   "location": "[location]",
-  "loginServer": "guideRegistry.azurecr.io",
+  "loginServer": "guideregistry.azurecr.io",
   "name": "guideRegistry",
   "networkRuleSet": null,
   "provisioningState": "Succeeded",
@@ -246,7 +246,7 @@ The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku`
 These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
 storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
 
-Your container registry has a server name of `guideRegistry.azurecr.io`. 
+Your container registry has a server name of `guideregistry.azurecr.io`. 
 
 === Logging into the container registry
 
@@ -343,16 +343,16 @@ Tag your container images with your registry:
 
 [role=command]
 ```
-docker tag inventory:latest guideRegistry.azurecr.io/inventory
-docker tag system:latest guideRegistry.azurecr.io/system
+docker tag inventory:latest guideregistry.azurecr.io/inventory
+docker tag system:latest guideregistry.azurecr.io/system
 ```
 
 Finally, push your images to the registry:
 
 [role=command]
 ```
-docker push guideRegistry.azurecr.io/inventory
-docker push guideRegistry.azurecr.io/system
+docker push guideregistry.azurecr.io/inventory
+docker push guideregistry.azurecr.io/system
 ```
 
 // =================================================================================================
@@ -443,7 +443,7 @@ Replace `[password]` with the registry password thatyou viewed in the last secti
 [role=command]
 ```
 kubectl create secret docker-registry guideSecret \
-    --docker-server=guideRegistry.azurecr.io \
+    --docker-server=guideregistry.azurecr.io \
     --docker-username=guideRegistry \
     --docker-password=[password] \
     --docker-email=[email-address]
