@@ -442,7 +442,7 @@ Replace `[password]` with the registry password thatyou viewed in the last secti
 
 [role=command]
 ```
-kubectl create secret docker-registry guideSecret \
+kubectl create secret docker-registry guidesecret \
     --docker-server=guideregistry.azurecr.io \
     --docker-username=guideRegistry \
     --docker-password=[password] \
@@ -452,7 +452,7 @@ The secret is successfully created with the following output:
 
 [role="no_copy"]
 ----
-secret/guideSecret created
+secret/guidesecret created
 ----
 
 // =================================================================================================

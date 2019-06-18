@@ -22,7 +22,7 @@ spec:
         - containerPort: 9080
       # tag::sysSecret[]
       imagePullSecrets:
-      - name: guideSecret
+      - name: guidesecret
       # end::sysSecret[]
 ---
 apiVersion: apps/v1
@@ -49,7 +49,7 @@ spec:
         - containerPort: 9081
       # tag::invSecret[]
       imagePullSecrets:
-      - name: guideSecret
+      - name: guidesecret
       # end::invSecret[]
 ---
 apiVersion: v1
