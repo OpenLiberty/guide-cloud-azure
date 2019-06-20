@@ -698,22 +698,7 @@ kubectl delete -f kubernetes.yaml
 ```
 
 Since you are done testing your cluster, clean up all of its related sources using the `az group delete` command.
-This command will remove the resource group, container service, and all related resources.
-However, deleting an AKS cluster does not delete the service principal that was automatically created and linked with your cluster. 
-
-Get the `client-Id` of the service principal from the `az aks show` command, and then delete the service principal:
-
-[role='command']
-```
-az aks show -g guideGroup -n guideCluster --query servicePrincipalProfile.clientId -o tsv
-```
-
-[role='command']
-```
-az ad sp delete --id [servicePrincipalProfile-clientId]
-```
-
-Delete the rest of your Azure resources:
+This command will remove the resource group, container service, and all related resources:
 
 [role='command']
 ```
