@@ -18,7 +18,6 @@
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Azure Kubernetes Service
 :page-seo-description: Find out how to deploy an app to Azure Kubernetes Service
-:page-guide-category: microprofile
 :guide-author: Open Liberty
 :page-essential: false
 = Deploying microservices to Azure Kubernetes Service
