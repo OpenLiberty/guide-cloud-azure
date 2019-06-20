@@ -39,7 +39,7 @@ public class SystemEndpointTest {
     @BeforeClass
     public static void oneTimeSetup() {
         String port = System.getProperty("sys.http.port");
-        systemServiceIp = System.getProperty("system.kube.service");
+        systemServiceIp = System.getProperty("system.ip");
         url = "http://" + systemServiceIp + ":" + port + "/system/properties/";
     }
     

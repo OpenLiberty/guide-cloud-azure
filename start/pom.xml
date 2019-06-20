@@ -35,10 +35,10 @@
         <inv.service.https.port>9444</inv.service.https.port>
         <!-- Default test properties -->
         <!-- tag::sysKubeService[] -->
-        <system.kube.service>system-service</system.kube.service>
+        <system.ip>system-service</system.ip>
         <!-- end::sysKubeService[] -->
         <!-- tag::invKubeService[] -->
-        <inventory.kube.service>inventory-service</inventory.kube.service>
+        <inventory.ip>inventory-service</inventory.ip>
         <!-- end::invKubeService[] -->
     </properties>
 
@@ -202,10 +202,10 @@
                                 </includes>
                                 <systemPropertyVariables>
                                     <system.kube.service>
-                                        ${system.kube.service}
+                                        ${system.ip}
                                     </system.kube.service>
                                     <inventory.kube.service>
-                                        ${inventory.kube.service}
+                                        ${inventory.ip}
                                     </inventory.kube.service>
                                     <sys.http.port>
                                         ${sys.service.http.port}

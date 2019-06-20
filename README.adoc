@@ -600,8 +600,8 @@ The default properties that are defined in the [hotspot file=0]`pom.xml` file ar
 [cols="15, 100", options="header"]
 |===
 | *Property*                      | *Description*
-| [hotspot=sysKubeService file=0]`system.kube.service` | Name of the {kube} Service wrapping the `system` pods, `system-service` by default.
-| [hotspot=invKubeService file=0]`inventory.kube.service` | Name of the {kube} Service wrapping the `inventory` pods, `inventory-service` by default.
+| [hotspot=sysKubeService file=0]`system.ip` | Name of the {kube} Service wrapping the `system` pods, `system-service` by default.
+| [hotspot=invKubeService file=0]`inventory.ip` | Name of the {kube} Service wrapping the `inventory` pods, `inventory-service` by default.
 | [hotspot=sysHttpPort file=0]`sys.service.http.port`    | The HTTP port for the {kube} Service `system-service`, 9080 by default.
 | [hotspot=invHttpPort file=0]`inv.service.http.port`    | The HTTP port of the {kube} Service `inventory-service`, 9081 by default.
 |===
@@ -645,11 +645,12 @@ include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/Inven
 
 === Running the tests
 
-Run the Maven `verify` goal to test your microservices by replacing the `[system-EXTERNAL-IP]` with the value determined in the previous section.
+Run the Maven `verify` goal to test your microservices by replacing the `[system-EXTERNAL-IP]` and `[inventory-EXTERNAL-IP]`
+with the value determined in the previous section.
 
 [role='command']
 ```
-mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-EXTERNAL-IP]
+mvn verify -Ddockerfile.skip=true -Dsystem.ip=[system-EXTERNAL-IP] -Dinventory.ip=[inventory-EXTERNAL-IP]
 ```
 
 The `dockerfile.skip` parameter is set to `true` to skip building a new container image.

@@ -45,10 +45,10 @@ public class InventoryEndpointTest {
         String sysServPort = System.getProperty("sys.http.port");
 
         // tag::sysServiceIp[]
-        systemServiceIp = System.getProperty("system.kube.service");
+        systemServiceIp = System.getProperty("system.ip");
         // end::sysServiceIp[]
         // tag::invServiceIp[]
-        inventoryServiceIp = System.getProperty("inventory.kube.service");
+        inventoryServiceIp = System.getProperty("inventory.ip");
         // end::invServiceIp[]
 
         invUrl = "http://" + inventoryServiceIp + ":" + invServPort + "/inventory/systems/";
