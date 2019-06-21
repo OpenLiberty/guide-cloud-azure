@@ -8,7 +8,7 @@
 //
 :projectid: cloud-azure
 :page-layout: guide-multipane
-:page-duration: 15 minutes
+:page-duration: 45 minutes
 :page-releasedate: 2019-08-01
 :page-description: Learn how to deploy microservices to Azure Kubernetes Service (AKS).
 :page-tags: ['Docker']
@@ -26,7 +26,7 @@
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to deploy your microservices application to Azure Kubernetes Service (AKS).
+Explore how to deploy microservices to Azure Kubernetes Service (AKS).
 
 :kube: Kubernetes
 :hashtag: #
@@ -64,11 +64,11 @@ and distribute your container images. Note, since AKS is not free, there is a sm
 cost that is associated with deployig this application. See the official
 https://azure.microsoft.com/en-us/pricing/details/kubernetes-service/[AKS pricing^] documentation for more details.
 
-The two microservices that you'll be working with are called `system` and `inventory`. 
-The `system` microservice returns the JVM system properties of the running container.  
+The two microservices you will deploy are called `system` and `inventory`. 
+The system microservice returns the JVM system properties of the running container. 
+It also returns the pod’s name in the HTTP header, making replicas easy to distinguish from each other. 
 The `inventory` microservice adds the properties from the `system` microservice to the inventory. 
-This guide demonstrates how both microservices can run and communicate
-in different isolated containers.
+This demonstrates how communication can be established between pods inside a cluster.
 
 // =================================================================================================
 // Prerequisites
@@ -130,11 +130,10 @@ include::{common-includes}/gitclone.adoc[]
 == Managing an Azure Container Registry
 
 In order to deploy your microservices, you need to create an Azure Container Registry in the same location
-as where your services will be deployed. 
+as where your services will be deployed, and link the registry to a resource group. 
 
 === Creating a resource group
 
-Your Azure Container Registry will be placed inside its own resource group that you will create.
 
 A resource group is a logical collection of related resources that can be deployed and maintained as a single entity.
 For instance, virtual machines, databases, and storage networks are types of resources that resource groups can be formed from.
@@ -142,8 +141,8 @@ Resource groups are dedicated to container registries because the resources in t
 different hosts and their containers. 
 
 To create a resource group, an Azure location must be specified. The metadata for your resources are stored at this given location. 
-If resources are created without specifying a location and created after creating a resource group, these new resources will run in the
-same region specfied by the resource group location. 
+If resources are created later without specifying a location, these new resources will run in the
+same region that you specified for creating a resource group. 
 
 See the list of available Azure regions for your Azure subscription:
 
@@ -151,9 +150,6 @@ See the list of available Azure regions for your Azure subscription:
 ```
 az account list-locations -o table
 ```
-
-The `name` column specifies the region name that you will be using to create your resource group
-
 
 You will see an output similar to the following:
 
@@ -175,10 +171,13 @@ West Central US      40.890      -110.234     westcentralus
 West US 2            47.233      -119.852     westus2
 ----
 
+The `name` column specifies the region name that you will be using to create your resource group.
+
 However, AKS is not available in all regions. Make sure that the region you select is 
 https://azure.microsoft.com/en-us/global-infrastructure/services/?products=kubernetes-service[compatible with AKS^].
 
-Create a resource group and replace `[location]` with a region that is available for your subscription and compatible with AKS.
+Create a resource group using the `az group create` command. Remember to replace `[location]` with a region 
+that is available for your subscription and compatible with AKS.
 
 [role=command]
 ```
@@ -212,6 +211,14 @@ With the Azure `az acr` command, create an Azure Container Registry.
 az acr create -g guideGroup -n guideRegistry --sku Basic --admin-enabled
 ```
 
+In the `az acr create` command, the `-g` option specifies the resource group to designate to the container registry. 
+You created this resource group before as `guideGroup`. The `-n` option specifies the name of the
+container registry to be created, which was defined as `guideRegistry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
+
+The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
+These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
+storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
+
 You will see an output similar to the following:
 
 [role="no_copy"]
@@ -237,19 +244,11 @@ You will see an output similar to the following:
 }
 ```
 
-In the `az acr create` command, the `-g` option specifies the resource group to designate to the container registry. 
-You created this resource group before as `guideGroup`. The `-n` option specifies the name of the
-container registry to be created, which was defined as `guideRegistry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
-
-The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
-These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
-storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
-
 Your container registry has a server name of `guideregistry.azurecr.io`. 
 
 === Logging into the container registry
 
-You must log into your Azure Container Registry using the Azure CLI, in order to be able to push Docker images to your registry.
+You must log into your Azure Container Registry using the Azure CLI, in order to push Docker images to your registry.
 
 [role=command]
 ```
@@ -297,7 +296,8 @@ You will see an output similar to the following:
 The starting Java project, which you can find in the `start` directory, is a multi-module Maven
 project. It is made up of the `system` and `inventory` microservices. Each microservice resides in its own directory,
 `start/system` and `start/inventory`. Both of these directories contain a Dockerfile, which is necessary
-for building the Docker images.
+for building the Docker images. If you're unfamiliar with Dockerfiles, check out the
+https://openliberty.io/guides/docker.html[Using Docker containers to develop microservices^] guide.
 
 Navigate to the `start` directory and run the following command:
 
@@ -436,7 +436,7 @@ To be able to pull the images from your Azure container registry, the credential
 through a secret. 
 
 Use the `kubectl create secret docker-registry` command to create a secret to hold your registry credentials. 
-Replace `[password]` with the registry password thatyou viewed in the last section by running the 
+Replace `[password]` with the registry password that you viewed in the last section by running the 
 `az acr credential show -n guideRegistry` command. The email that is associated with your Docker account should replace `[email-address]`.
 
 [role=command]
@@ -544,8 +544,8 @@ You will need to wait a while for the `EXTERNAL-IP` to change from `<pending>` t
 
 [role="no_copy"]
 ----
-NAME             TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
-system-service   LoadBalancer   10.0.27.66   <pending>     9080:32436/TCP   26s
+NAME                TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+system-service      LoadBalancer   10.0.27.66     <pending>     9080:32436/TCP   26s
 ----
 
 [role="no_copy"]
@@ -568,7 +568,7 @@ NAME             TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
 inventory-service   LoadBalancer   10.0.103.223   168.61.174.136   9081:32739/TCP   2m8s
 ----
 
-To access the application and your microservices, point your browser to the following URLs, substituting the appropriate hostnames
+To access your microservices, point your browser to the following URLs, substituting the appropriate `EXTERNAL-IP` hostnames
 for the `system` and `inventory` services:
 
 - `{inventory-api}`
