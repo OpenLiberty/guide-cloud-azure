@@ -544,28 +544,28 @@ You will need to wait a while for the `EXTERNAL-IP` to change from `<pending>` t
 
 [role="no_copy"]
 ----
-NAME                TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
-system-service      LoadBalancer   10.0.27.66     <pending>     9080:32436/TCP   26s
+NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)           AGE
+system-service      LoadBalancer   10.0.27.66     <pending>       9080:32436/TCP    26s
 ----
 
 [role="no_copy"]
 ----
-NAME                TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
-inventory-service   LoadBalancer   10.0.103.223   <pending>     9081:32739/TCP   69s
+NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)           AGE
+inventory-service   LoadBalancer   10.0.103.223   <pending>       9081:32739/TCP    69s
 ----
 
 Once the `EXTERNAL-IP` appears, press `CTRL-C` for kubectl to stop watching the services. 
 
 [role="no_copy"]
 ----
-NAME             TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
-system-service   LoadBalancer   10.0.27.66   23.99.223.10   9080:32436/TCP   74s
+NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)           AGE
+system-service      LoadBalancer   10.0.27.66     23.99.223.10    9080:32436/TCP    74s
 ----
 
 [role="no_copy"]
 ----
-NAME             TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
-inventory-service   LoadBalancer   10.0.103.223   168.61.174.136   9081:32739/TCP   2m8s
+NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)           AGE
+inventory-service   LoadBalancer   10.0.103.223   168.61.174.136  9081:32739/TCP    2m8s
 ----
 
 To access your microservices, point your browser to the following URLs, substituting the appropriate `EXTERNAL-IP` hostnames
