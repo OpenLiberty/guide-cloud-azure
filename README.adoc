@@ -303,7 +303,7 @@ Navigate to the `start` directory and run the following command:
 
 [role=command]
 ```
-mvn install
+mvn package
 ```
 
 Now that your microservices are packaged, you will build your 
