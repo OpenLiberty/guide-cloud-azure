@@ -186,7 +186,7 @@ az group create -l [location] -n guideGroup
 
 You will see an output similar to the following:
 
-[source, role="no_copy"]
+[role="no_copy"]
 ```
 {
   "id": "/subscriptions/[subscription-id]/resourceGroups/guideGroup",
@@ -588,6 +588,11 @@ you see a new entry for `[system-EXTERNAL-IP]`.
 
 == Testing the microservices
 
+A few tests are included for you to test the basic functionality of the microservices. 
+If a test failure occurs, then you might have introduced a bug into the code. 
+To run the tests, wait for all pods to be in the ready state before you proceed further. 
+The default properties that are defined in the `pom.xml` file are:
+
 pom.xml
 [source, xml, linenums, role='code_column']
 ----
@@ -605,42 +610,6 @@ The default properties that are defined in the [hotspot file=0]`pom.xml` file ar
 | [hotspot=invHttpPort file=0]`inv.service.http.port`    | The HTTP port of the {kube} Service `inventory-service`, 9081 by default.
 |===
 
-You can test the basic functionality of your microservices. If a test failure
-occurs, then you might have introduced a bug into the code. To run the tests, wait for all pods to be
-in the ready state before you proceed further. 
-
-[role="code_command hotspot file=1", subs="quotes"]
-----
-#Create the `SystemEndpointTest` class.#
-`system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java`
-----
-
-SystemEndpointTest.java
-[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
-----
-include::finish/system/src/test/java/it/io/openliberty/guides/system/SystemEndpointTest.java[]
-----
-
-The [hotspot=testGetProperties file=1]`testGetProperties()` method checks for a `200` response status from the `system` service endpoint.
-
-[role="code_command hotspot file=2", subs="quotes"]
-----
-#Create the `InventoryEndpointTest` class.#
-`inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java`
-----
-
-InventoryEndpointTest.java
-[source, java, linenums, indent=0, role="code_column hide_tags=copyright"]
-----
-include::finish/inventory/src/test/java/it/io/openliberty/guides/inventory/InventoryEndpointTest.java[]
-----
-
-* The [hotspot=testEmptyInventory file=2]`testEmptyInventory()` method checks that the `inventory` service has a total of 0 systems before anything is added to it.
-* The [hotspot=testHostRegistration file=2]`testHostRegistration()` method checks that the `system` service was added to `inventory` properly.
-* The [hotspot=testSystemPropertiesMatch file=2]`testSystemPropertiesMatch()` checks that the `system` properties match what was added into the `inventory`.
-* The [hotspot=testUnknownHost file=2]`testUnknownHost()` checks that an error is raised if an unknown host name is being added into the `inventory` service.
-* The [hotspot=sysServiceIp file=2]`systemServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `system` service. This value will also be passed in when you run the tests. 
-* The [hotspot=invServiceIp file=2]`inventoryServiceIp` is the same IP address value that you retrieved in the previous section that is assigned to the `inventory` service. This value will also be passed in when you run the tests. 
 
 === Running the tests
 
