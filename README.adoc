@@ -11,9 +11,9 @@
 :page-duration: 45 minutes
 :page-releasedate: 2019-08-01
 :page-description: Learn how to deploy microservices to Azure Kubernetes Service (AKS).
-:page-tags: ['Docker']
+:page-tags: ['Kubernetes', 'Docker', 'Cloud']
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['docker', 'kubernetes-intro']
+:page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Azure Kubernetes Service
