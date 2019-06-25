@@ -10,7 +10,7 @@
 :page-layout: guide-multipane
 :page-duration: 45 minutes
 :page-releasedate: 2019-08-01
-:page-description: Learn how to deploy microservices to Azure Kubernetes Service (AKS).
+:page-description: Explore how to deploy microservices to Azure Kubernetes Service (AKS).
 :page-tags: ['Kubernetes', 'Docker', 'Cloud']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'docker']
@@ -575,8 +575,7 @@ for the `system` and `inventory` services:
 - `{system-api}`
 
 The first URL returns an empty list is expected because no system properties are stored in the inventory yet. 
-
-In the second URL, you see a result in JSON format with the system properties of your local JVM.
+In the second URL, you see a result in JSON format with the system properties of the container JVM.
 
 Point your browser to the `{inventory-api}/[system-EXTERNAL-IP]` URL. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to `{inventory-api}` and
