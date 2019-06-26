@@ -15,7 +15,7 @@ docker build -t system system/.
 docker build -t inventory inventory/.
 
 printf "\replacing containers in kubernetes.yaml\n"
-sed -i 's/guideregistry.azurecr.io//g' kubernetes.yaml
+cat kubernetes.yaml | sed 's/guideregistry.azurecr.io\/system/system/g' | sed 's/guideregistry.azurecr.io\/inventory/inventory/g' > kubernetes.yaml
 
 printf "\nkubectl apply -f kubernetes.yaml\n"
 kubectl apply -f kubernetes.yaml
