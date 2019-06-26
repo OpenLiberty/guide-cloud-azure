@@ -10,16 +10,11 @@ set -euxo pipefail
 printf "\nmvn -q package\n"
 mvn -q package
 
-
-docker build -t system:monkey system/.
-docker build -t inventory:monkey inventory/.
-
-printf "\replacing containers in kubernetes.yaml\n"
-cat kubernetes.yaml | sed 's/guideregistry.azurecr.io\/system/system:monkey/g' | sed 's/guideregistry.azurecr.io\/inventory/inventory:monkey/g' > kubernetes.tmp.yaml
-mv kubernetes.tmp.yaml kubernetes.yaml
+docker build -t system:test system/.
+docker build -t inventory:test inventory/.
 
 printf "\nkubectl apply -f kubernetes.yaml\n"
-kubectl apply -f kubernetes.yaml
+kubectl apply -f ../scripts/kubernetes.yaml
 
 printf "\nsleep 120\n"
 sleep 120
@@ -30,11 +25,19 @@ kubectl get pods
 printf "\nminikube ip\n"
 echo `minikube ip`
 
-printf "\ncurl http://`minikube ip`:9080/system/properties\n"
-curl http://`minikube ip`:9080/system/properties
+GUIDE_IP=`minikube ip`
+GUIDE_SYSTEM_PORT=`kubectl get service system-service -o jsonpath="{.spec.ports[0].nodePort}"`
+GUIDE_INVENTORY_PORT=`kubectl get service inventory-service -o jsonpath="{.spec.ports[0].nodePort}"`
 
-printf "\ncurl http://`minikube ip`:9081/inventory/systems/system-service\n"
-curl http://`minikube ip`:9081/inventory/systems/system-service
+printf "\nMinikube IP: $GUIDE_IP\n"
+printf "\nSystem Port: $GUIDE_SYSTEM_PORT\n"
+printf "\nInventory Port: $GUIDE_INVENTORY_PORT\n"
+
+printf "\ncurl http://$GUIDE_IP:$GUIDE_SYSTEM_PORT/system/properties\n"
+curl http://$GUIDE_IP:$GUIDE_SYSTEM_PORT/system/properties
+
+printf "\ncurl http://$GUIDE_IP:$GUIDE_INVENTORY_PORT/inventory/systems/system-service\n"
+curl http://$GUIDE_IP:$GUIDE_INVENTORY_PORT/inventory/systems/system-service
 
 mvn verify -Ddockerfile.skip=true -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip`
 
