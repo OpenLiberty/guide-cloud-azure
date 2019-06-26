@@ -11,11 +11,11 @@ printf "\nmvn -q package\n"
 mvn -q package
 
 
-docker build -t system system/.
-docker build -t inventory inventory/.
+docker build -t system:monkey system/.
+docker build -t inventory:monkey inventory/.
 
 printf "\replacing containers in kubernetes.yaml\n"
-cat kubernetes.yaml | sed 's/guideregistry.azurecr.io\/system/system:latest/g' | sed 's/guideregistry.azurecr.io\/inventory/inventory:latest/g' > kubernetes.tmp.yaml
+cat kubernetes.yaml | sed 's/guideregistry.azurecr.io\/system/system:monkey/g' | sed 's/guideregistry.azurecr.io\/inventory/inventory:monkey/g' > kubernetes.tmp.yaml
 mv kubernetes.tmp.yaml kubernetes.yaml
 
 printf "\nkubectl apply -f kubernetes.yaml\n"
@@ -27,9 +27,6 @@ sleep 120
 printf "\nkubectl get pods\n"
 kubectl get pods
 
-
-
-
 printf "\nminikube ip\n"
 echo `minikube ip`
 
@@ -39,11 +36,7 @@ curl http://`minikube ip`:9080/system/properties
 printf "\ncurl http://`minikube ip`:9081/inventory/systems/system-service\n"
 curl http://`minikube ip`:9081/inventory/systems/system-service
 
-
 mvn verify -Ddockerfile.skip=true -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip`
-
-
-
 
 printf "\nkubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)\n"
 kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
