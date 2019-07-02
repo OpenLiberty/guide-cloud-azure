@@ -329,7 +329,7 @@ To verify that the images are built, run the `docker images` command to list all
 docker images
 ```
 
-Your two images `inventory` and `system` should appear in the list of all Docker images:
+Your two images `system` and `inventory` should appear in the list of all Docker images:
 
 [role="no_copy"]
 ----
@@ -340,22 +340,22 @@ system        latest    1dff6d0b4f31    5 minutes ago    470MB
 
 === Pushing the images to a container registry
 
-Pushing the images to a registry allows the cluster to create pods by using your container images.
+Pushing the images to a registry allows the cluster to create pods using your container images.
 
 Tag your container images with your registry:
 
 [role=command]
 ```
-docker tag inventory:latest guideregistry.azurecr.io/inventory
 docker tag system:latest guideregistry.azurecr.io/system
+docker tag inventory:latest guideregistry.azurecr.io/inventory
 ```
 
 Finally, push your images to the registry:
 
 [role=command]
 ```
-docker push guideregistry.azurecr.io/inventory
 docker push guideregistry.azurecr.io/system
+docker push guideregistry.azurecr.io/inventory
 ```
 
 // =================================================================================================
@@ -366,7 +366,7 @@ docker push guideregistry.azurecr.io/system
 
 === Provisioning a cluster
 
-To create your AKS cluster, use the `az aks create` cluster command. You might need to wait a while your
+To create your AKS cluster, use the `az aks create` cluster command. You may need to wait while your
 cluster is being created.
 
 [role=command]
@@ -531,7 +531,7 @@ inventory-deployment-645767664f-nbtd9   1/1       Running   0          15s
 
 === Making requests to the microservices
 
-You will need the external IP addresses associated with `system` and `inventory` to try out your microservices.
+You will need the external IP addresses associated with the `system` and `inventory` services to try out your microservices.
 
 Take note of the `EXTERNAL-IP` in the output of the following commands. It is the 
 hostname you will later substitute into `[hostname]`.
@@ -575,11 +575,11 @@ inventory-service   LoadBalancer   10.0.103.223   168.61.174.136  9081:32739/TCP
 To access your microservices, point your browser to the following URLs, substituting the appropriate `EXTERNAL-IP` hostnames
 for the `system` and `inventory` services:
 
-- `{inventory-api}`
 - `{system-api}`
+- `{inventory-api}`
 
-The first URL returns an empty list is expected because no system properties are stored in the inventory yet. 
-In the second URL, you see a result in JSON format with the system properties of the container JVM.
+In the first URL, you see a result in JSON format with the system properties of the container JVM.
+The second URL returns an empty list, which is expected because no system properties are stored in the inventory yet. 
 
 Point your browser to the `{inventory-api}/[system-EXTERNAL-IP]` URL. When you visit this URL, these system
 properties are automatically stored in the inventory. Go back to `{inventory-api}` and
