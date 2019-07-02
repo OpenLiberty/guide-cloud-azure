@@ -133,8 +133,8 @@ include::{common-includes}/gitclone.adoc[]
 
 == Managing an Azure Container Registry
 
-In order to deploy your microservices, you need to create an Azure Container Registry in the same location
-as where your services will be deployed, and link the registry to a resource group. 
+In order to deploy your microservices, you need to create an Azure Container Registry in the same location 
+where your services will be deployed, and link the registry to a resource group. 
 
 === Creating a resource group
 
@@ -371,7 +371,7 @@ cluster is being created.
 
 [role=command]
 ```
-az aks create -g guideGroup --name guideCluster --generate-ssh-keys
+az aks create -g guideGroup -n guideCluster --generate-ssh-keys
 ```
 
 Running this command creates an AKS cluster that is called `guideCluster` with the resource group
@@ -673,7 +673,7 @@ This command will remove the resource group, container service, and all related 
 
 [role='command']
 ```
-az group delete --name guideGroup --yes --no-wait
+az group delete -g guideGroup --yes --no-wait
 ```
 
 // =================================================================================================
