@@ -61,7 +61,7 @@ needing to install or maintain your own Kubernetes control plane. It provides a 
 cluster that you can deploy your microservices to. You will use AKS with an Azure
 Container Registry (ACR). ACR is a private registry that is used to store 
 and distribute your container images. Note, since AKS is not free, there is a small
-cost that is associated with deployig this application. See the official
+cost that is associated with deploying this application. See the official
 https://azure.microsoft.com/en-us/pricing/details/kubernetes-service/[AKS pricing^] documentation for more details.
 
 The two microservices you will deploy are called `system` and `inventory`. 
