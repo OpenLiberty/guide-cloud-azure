@@ -16,17 +16,17 @@
 :page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Deploying microservices to Azure Kubernetes Service
-:page-seo-description: Find out how to deploy an app to Azure Kubernetes Service
+:page-seo-title: Deploying microservices to Microsoft Azure
+:page-seo-description: A tutorial on how to deploy microservices to Microsoft Azure Kubernetes Service
 :guide-author: Open Liberty
 :page-essential: false
-= Deploying microservices to Azure Kubernetes Service
+= Deploying microservices to Microsoft Azure Kubernetes Service
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
 view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Explore how to deploy microservices to Azure Kubernetes Service (AKS).
+Explore how to deploy microservices to Azure Kubernetes Service (AKS) on Microsoft Azure.
 
 :kube: Kubernetes
 :hashtag: #
@@ -259,7 +259,7 @@ You must log into your Azure Container Registry using the Azure CLI, in order to
 az acr login -n guideRegistry
 ```
 
-Once you login, you will see the following:
+Once you log in, you will see the following:
 
 [role="no_copy"]
 ----
