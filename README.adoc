@@ -16,11 +16,11 @@
 :page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'docker']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Deploying microservices to Microsoft Azure
-:page-seo-description: A tutorial on how to deploy microservices to Microsoft Azure Kubernetes Service
+:page-seo-title: Deploying microservices to Azure Kubernetes Service (EKS)
+:page-seo-description: A tutorial on how to deploy microservices to AKS using Azure Container Registry (ACR) as a private container registry.
 :guide-author: Open Liberty
 :page-essential: false
-= Deploying microservices to Microsoft Azure Kubernetes Service
+= Deploying microservices to Azure Kubernetes Service
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form,
@@ -81,9 +81,6 @@ Before you begin, the following tools need to be installed:
 * *Docker:* You need a containerization software for building containers. Kubernetes 
 supports various container types, but you will use Docker in this guide. For installation 
 instructions, refer to the official https://docs.docker.com/install/[Docker^] documentation.
-
-+
-** Your Docker daemon must be started in order to perform the steps of this guide. 
 
 * *Azure Subscription:* To run this guide, you will need an Azure subscription. Navigate to the 
 https://azure.microsoft.com/en-us/pricing/purchase-options/pay-as-you-go/[Microsoft Azure Purchase Options^] 
@@ -266,27 +263,12 @@ Once you log in, you will see the following:
 Login Succeeded
 ----
 
-Your login credentials will be needed later, so keep your given password in mind. View the credentials of your
+Your login credentials will be needed later, so keep your given password in mind. View the password for your
 Azure container registry:
 
 [role=command]
 ```
-az acr credential show -n guideRegistry
-```
-
-You will see an output similar to the following:
-
-[role="no_copy"]
-```
-{
-  "passwords": [
-    {
-      "name": "password",
-      "value": "[password]"
-    },
-  ],
-  "username": "guideRegistry"
-}
+az acr credential show -n guideRegistry --query "passwords[0].value" -o tsv
 ```
 
 // =================================================================================================
@@ -536,10 +518,11 @@ You will need the external IP addresses associated with the `system` and `invent
 Take note of the `EXTERNAL-IP` in the output of the following commands. It is the 
 hostname you will later substitute into `[hostname]`.
 
+View the information of the `system` service to see its `EXTERNAL-IP` address:
+
 [role='command']
 ```
 kubectl get service/system-service -w
-kubectl get service/inventory-service -w
 ```
 
 The `-w` argument watches for changes about the service.
@@ -555,15 +538,24 @@ system-service      LoadBalancer   10.0.27.66     <pending>       9080:32436/TCP
 [role="no_copy"]
 ----
 NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)           AGE
-inventory-service   LoadBalancer   10.0.103.223   <pending>       9081:32739/TCP    69s
+system-service      LoadBalancer   10.0.27.66     23.99.223.10    9080:32436/TCP    74s
 ----
 
-Once the `EXTERNAL-IP` appears, press `CTRL-C` for kubectl to stop watching the services. 
+Once the `EXTERNAL-IP` appears, press `CTRL-C` for kubectl to stop watching the `system` service. 
+
+View the information of the `inventory` service to see its `EXTERNAL-IP` address:
+
+[role='command']
+```
+kubectl get service/inventory-service -w
+```
+
+You will need to wait a while for the `EXTERNAL-IP` to change from `<pending>` to an IP address.
 
 [role="no_copy"]
 ----
 NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)           AGE
-system-service      LoadBalancer   10.0.27.66     23.99.223.10    9080:32436/TCP    74s
+inventory-service   LoadBalancer   10.0.103.223   <pending>       9081:32739/TCP    69s
 ----
 
 [role="no_copy"]
@@ -571,6 +563,8 @@ system-service      LoadBalancer   10.0.27.66     23.99.223.10    9080:32436/TCP
 NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)           AGE
 inventory-service   LoadBalancer   10.0.103.223   168.61.174.136  9081:32739/TCP    2m8s
 ----
+
+Once the `EXTERNAL-IP` appears, press `CTRL-C` for kubectl to stop watching the `inventory` service.
 
 To access your microservices, point your browser to the following URLs, substituting the appropriate `EXTERNAL-IP` hostnames
 for the `system` and `inventory` services:
@@ -593,8 +587,7 @@ you see a new entry for `[system-EXTERNAL-IP]`.
 
 A few tests are included for you to test the basic functionality of the microservices. 
 If a test failure occurs, then you might have introduced a bug into the code. 
-To run the tests, wait for all pods to be in the ready state before you proceed further. 
-The default properties that are defined in the `pom.xml` file are:
+To run the tests, wait for all pods to be in the ready state before you proceed further.
 
 pom.xml
 [source, xml, linenums, role='code_column']
