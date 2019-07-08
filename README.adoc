@@ -81,6 +81,7 @@ Before you begin, the following tools need to be installed:
 * *Docker:* You need a containerization software for building containers. Kubernetes 
 supports various container types, but you will use Docker in this guide. For installation 
 instructions, refer to the official https://docs.docker.com/install/[Docker^] documentation.
+If you already have Docker installed, make sure to have it running.
 
 * *Azure Subscription:* To run this guide, you will need an Azure subscription. Navigate to the 
 https://azure.microsoft.com/en-us/pricing/purchase-options/pay-as-you-go/[Microsoft Azure Purchase Options^] 
