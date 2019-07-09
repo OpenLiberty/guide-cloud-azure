@@ -1,3 +1,10 @@
+# This is a modified version of the kubernetes.yaml file.
+# Modifications were made to the file so that it can be run with minikube,
+# and tested with Travis CI, without incurring any cloud costs. 
+
+# Make sure to keep this file consistent with any changes made to the
+# original kubernetes.yaml file. 
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,15 +22,11 @@ spec:
     spec:
       containers:
       - name: system-container
-        # tag::sysImage[]
         image: system:test
-        # end::sysImage[]
         ports:
         - containerPort: 9080
-      # tag::sysSecret[]
       imagePullSecrets:
       - name: guidesecret
-      # end::sysSecret[]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -42,15 +45,11 @@ spec:
     spec:
       containers:
       - name: inventory-container
-        # tag::invImage[]
         image: inventory:test
-        # end::invImage[]
         ports:
         - containerPort: 9081
-      # tag::invSecret[]
       imagePullSecrets:
       - name: guidesecret
-      # end::invSecret[]
 ---
 apiVersion: v1
 kind: Service
