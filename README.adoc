@@ -92,6 +92,7 @@ https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-late
 documentation for information about setting up the Azure CLI for your platform. 
 To verify that the Azure CLI is installed correctly, run the following command:
 
++
 [role=command]
 ```
 az --version
@@ -100,6 +101,7 @@ az --version
 * *kubectl:* You need the Kubernetes command-line tool `kubectl` to interact with your Kubernetes cluster.
 If you do not have `kubectl` installed already, use the Azure CLI to download and install `kubectl` with the following command:
 
++
 [role=command]
 ```
 az aks install-cli
