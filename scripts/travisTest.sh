@@ -12,7 +12,7 @@ mvn -q package
 docker build -t system:test system/.
 docker build -t inventory:test inventory/.
 
-kubectl apply -f ../scripts/kubernetes.yaml
+kubectl apply -f ../scripts/test.yaml
 
 sleep 120
 
