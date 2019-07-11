@@ -652,7 +652,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
 == Tearing down the environment
 
-It is important to clean up your resources when you are finished with the guide so that you do not continue to occur charges.
+It is important to clean up your resources when you are finished with the guide so that you do not incur additional charges for ongoing service.
 
 When you no longer need your deployed microservices, you can delete all {kube} resources 
 by running the `kubectl delete` command:
