@@ -16,7 +16,7 @@ spec:
       containers:
       - name: system-container
         # tag::sysImage[]
-        image: guideregistry.azurecr.io/system
+        image: guideregistry.azurecr.io/system:1.0-SNAPSHOT
         # end::sysImage[]
         ports:
         - containerPort: 9080
@@ -43,7 +43,7 @@ spec:
       containers:
       - name: inventory-container
         # tag::invImage[]
-        image: guideregistry.azurecr.io/inventory
+        image: guideregistry.azurecr.io/inventory:1.0-SNAPSHOT
         # end::invImage[]
         ports:
         - containerPort: 9081

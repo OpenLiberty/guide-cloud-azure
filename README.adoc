@@ -299,8 +299,8 @@ Run the following commands to build and containerize the application:
 
 [role='command']
 ```
-docker build -t system system/.
-docker build -t inventory inventory/.
+docker build -t system:1.0-SNAPSHOT system/.
+docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
 To verify that the images are built, run the `docker images` command to list all local Docker images:
@@ -314,9 +314,9 @@ Your two images `system` and `inventory` should appear in the list of all Docker
 
 [role="no_copy"]
 ----
-REPOSITORY    TAG       IMAGE ID        CREATED          SIZE
-inventory     latest    08fef024e986    4 minutes ago    471MB
-system        latest    1dff6d0b4f31    5 minutes ago    470MB
+REPOSITORY    TAG             IMAGE ID        CREATED          SIZE
+inventory     1.0-SNAPSHOT    08fef024e986    4 minutes ago    471MB
+system        1.0-SNAPSHOT    1dff6d0b4f31    5 minutes ago    470MB
 ----
 
 === Pushing the images to a container registry
@@ -327,8 +327,8 @@ Tag your container images with your registry:
 
 [role=command]
 ```
-docker tag system:latest guideregistry.azurecr.io/system
-docker tag inventory:latest guideregistry.azurecr.io/inventory
+docker tag system:1.0-SNAPSHOT guideregistry.azurecr.io/system:1.0-SNAPSHOT
+docker tag inventory:1.0-SNAPSHOT guideregistry.azurecr.io/inventory:1.0-SNAPSHOT
 ```
 
 Finally, push your images to the registry:
