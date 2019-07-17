@@ -1,8 +1,8 @@
-<?xml version='1.0' encoding='utf-8'?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -14,49 +14,48 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>inventory</artifactId>
     <packaging>war</packaging>
 
-    <properties>
-        <!-- Plugins -->
-        <version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
-        <app.name>inventory</app.name>
-    </properties>
-
     <dependencies>
-        <!-- Open Liberty features -->
+       <dependency>
+           <groupId>io.openliberty.features</groupId>
+           <artifactId>jaxrs-2.1</artifactId>
+           <type>esa</type>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>io.openliberty.features</groupId>
+           <artifactId>cdi-2.0</artifactId>
+           <type>esa</type>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.eclipse.microprofile.rest.client</groupId>
+           <artifactId>microprofile-rest-client-api</artifactId>
+       </dependency>
+       <dependency>
+           <groupId>io.openliberty.features</groupId>
+           <artifactId>mpConfig-1.3</artifactId>
+           <type>esa</type>
+           <scope>provided</scope>
+       </dependency>
         <dependency>
-            <groupId>io.openliberty.features</groupId>
-            <artifactId>jaxrs-2.1</artifactId>
-            <type>esa</type>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.openliberty.features</groupId>
-            <artifactId>jsonp-1.1</artifactId>
-            <type>esa</type>
-        </dependency>
-        <dependency>
-            <groupId>io.openliberty.features</groupId>
-            <artifactId>cdi-2.0</artifactId>
-            <type>esa</type>
-        </dependency>
-        <!-- For tests -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-rs-client</artifactId>
+            <artifactId>cxf-rt-rs-extension-providers</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-rs-extension-providers</artifactId>
+            <artifactId>cxf-rt-rs-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
         </dependency>
         <!-- Support for JDK 9 and above -->
         <dependency>
@@ -74,16 +73,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
-        </dependency> 
+        </dependency>
     </dependencies>
 
     <profiles>
-        <!-- Start system service before running tests -->
         <profile>
-            <id>setup-test</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <id>update-deployment</id>
             <build>
                 <plugins>
                     <plugin>
@@ -92,48 +87,21 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                         <version>${version.exec-maven-plugin}</version>
                         <executions>
                             <execution>
-                                <id>test-start-system-service</id>
+                                <id>update-kubernetes-deployment</id>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
-                                <phase>pre-integration-test</phase>
+                                <phase>package</phase>
                                 <configuration>
-                                    <workingDirectory>../system</workingDirectory>
-                                    <executable>mvn${mvn.extension}</executable>
+                                    <workingDirectory>.</workingDirectory>
+                                    <!-- kubectl${kubectl.extension -->
+                                    <executable>kubectl</executable>
                                     <arguments>
-                                        <argument>liberty:start-server</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <!-- Stop system service after running tests -->
-        <profile>
-            <id>teardown-test</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${version.exec-maven-plugin}</version>
-                        <executions>
-                            <execution>
-                                <id>test-stop-system-service</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <phase>post-integration-test</phase>
-                                <configuration>
-                                    <workingDirectory>../system</workingDirectory>
-                                    <executable>mvn${mvn.extension}</executable>
-                                    <arguments>
-                                        <argument>liberty:stop-server</argument>
+                                        <argument>set</argument>
+                                        <argument>image</argument>
+                                        <argument>deployment/ol-${project.artifactId}-ibm-open-liberty</argument>
+                                        <argument>ibm-open-liberty=${project.artifactId}:${project.version}</argument>
+                                        <argument>--record</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -145,13 +113,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     </profiles>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
             </plugin>
-
-            <!-- Liberty plugin -->
             <plugin>
                 <groupId>net.wasdev.wlp.maven.plugins</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
@@ -175,20 +142,22 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                         </configuration>
                     </execution>
                     <execution>
-                        <id>install-feature</id>
+                        <id>package-server</id>
                         <configuration>
-                            <skip>true</skip>
+                            <packageFile>${project.build.directory}/defaultServer.zip</packageFile>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- Plugin to run unit tests -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+            </plugin>
+            <!-- for tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-
-            <!-- Plugin to run functional tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
