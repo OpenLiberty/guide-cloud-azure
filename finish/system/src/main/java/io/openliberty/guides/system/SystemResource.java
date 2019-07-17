@@ -28,6 +28,8 @@ public class SystemResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getProperties() {
-    return System.getProperties();
+    return Response.ok(System.getProperties())
+      .header("X-Pod-Name", System.getenv("HOSTNAME"))
+      .build();
   } 
 }
