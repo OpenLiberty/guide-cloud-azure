@@ -335,8 +335,8 @@ Finally, push your images to the registry:
 
 [role=command]
 ```
-docker push guideregistry.azurecr.io/system
-docker push guideregistry.azurecr.io/inventory
+docker push guideregistry.azurecr.io/system:1.0-SNAPSHOT
+docker push guideregistry.azurecr.io/inventory:1.0-SNAPSHOT
 ```
 
 // =================================================================================================
