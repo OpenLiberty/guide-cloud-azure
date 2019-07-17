@@ -28,6 +28,6 @@ public class SystemResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getProperties() {
-    return Response.ok(System.getProperties());
+    return System.getProperties();
   } 
 }
