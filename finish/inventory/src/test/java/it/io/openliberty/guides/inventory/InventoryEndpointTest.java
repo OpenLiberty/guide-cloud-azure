@@ -71,8 +71,6 @@ public class InventoryEndpointTest {
         client.close();
     }
 
-    // tag::tests[]
-    // tag::testSuite[]
     @Test
     public void testSuite() {
         this.testEmptyInventory();
@@ -80,9 +78,7 @@ public class InventoryEndpointTest {
         this.testSystemPropertiesMatch();
         this.testUnknownHost();
     }
-    // end::testSuite[]
-
-    // tag::testEmptyInventory[]
+    
     public void testEmptyInventory() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -96,9 +92,7 @@ public class InventoryEndpointTest {
 
         response.close();
     }
-    // end::testEmptyInventory[]
 
-    // tag::testHostRegistration[]
     public void testHostRegistration() {
         this.visitSystemService();
 
@@ -120,9 +114,7 @@ public class InventoryEndpointTest {
 
         response.close();
     }
-    // end::testHostRegistration[]
 
-    // tag::testSystemPropertiesMatch[]
     public void testSystemPropertiesMatch() {
         Response invResponse = this.getResponse(invUrl);
         Response sysResponse = this.getResponse(sysUrl);
@@ -130,7 +122,8 @@ public class InventoryEndpointTest {
         this.assertResponse(invUrl, invResponse);
         this.assertResponse(sysUrl, sysResponse);
 
-        JsonObject jsonFromInventory = (JsonObject) invResponse.readEntity(JsonObject.class)
+        JsonObject jsonFromInventory = (JsonObject) invResponse
+                                                            .readEntity(JsonObject.class)
                                                             .getJsonArray("systems")
                                                             .getJsonObject(0)
                                                             .get("properties");
@@ -150,9 +143,7 @@ public class InventoryEndpointTest {
         invResponse.close();
         sysResponse.close();
     }
-    // end::testSystemPropertiesMatch[]
 
-    // tag::testUnknownHost[]
     public void testUnknownHost() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -170,56 +161,21 @@ public class InventoryEndpointTest {
         response.close();
         badResponse.close();
     }
-    // end::testUnknownHost[]
-    // end::tests[]
-    // tag::helpers[]
-    // tag::javadoc[]
-    /**
-     * <p>
-     * Returns response information from the specified URL.
-     * </p>
-     * 
-     * @param url
-     *          - target URL.
-     * @return Response object with the response from the specified URL.
-     */
-    // end::javadoc[]
+
+
+    // Returns response information from the specified URL.
     private Response getResponse(String url) {
         return client.target(url).request().get();
     }
-    
-    // tag::javadoc[]
-    /**
-     * <p>
-     * Asserts that the given URL has the correct response code of 200.
-     * </p>
-     * 
-     * @param url
-     *          - target URL.
-     * @param response
-     *          - response received from the target URL.
-     */
-    // end::javadoc[]
+
+    // Asserts that the given URL has the correct response code of 200.
     private void assertResponse(String url, Response response) {
         assertEquals("Incorrect response code from " + url, 200,
                     response.getStatus());
     }
 
-    // tag::javadoc[]
-    /**
-     * Asserts that the specified JVM system property is equivalent in both the
-     * system and inventory services.
-     * 
-     * @param propertyName
-     *          - name of the system property to check.
-     * @param hostname
-     *          - name of JVM's host.
-     * @param expected
-     *          - expected name.
-     * @param actual
-     *          - actual name.
-     */
-    // end::javadoc[]
+    // Asserts that the specified JVM system property is equivalent in both the
+    // system and inventory services.
     private void assertProperty(String propertyName, String hostname,
         String expected, String actual) {
         assertEquals("JVM system property [" + propertyName + "] "
@@ -227,11 +183,7 @@ public class InventoryEndpointTest {
             + "the inventory service for " + hostname, expected, actual);
     }
 
-    // tag::javadoc[]
-    /**
-     * Makes a simple GET request to inventory/localhost.
-     */
-    // end::javadoc[]
+    // Makes a simple GET request to inventory/localhost.
     private void visitSystemService() {
         Response response = this.getResponse(sysUrl);
         this.assertResponse(sysUrl, response);
