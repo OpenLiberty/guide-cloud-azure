@@ -362,9 +362,9 @@ The option `--node-count -c` could also be added to this `az aks create` command
 with a certain number of nodes in the Kubernetes node pool. By default, if this option is excluded,
 three nodes will be assigned to the node pool.
 
-An AKS cluster requires a service principal, which is a security credential that allows you to assign specific permissions
-for Azure resources accessed by applications and services. The `az aks create` command automatically generates a service principal to use 
-with your newly created cluster. However, in order to run this command, your Azure account must have permission access to create
+An AKS cluster requires a service principal, which is an identity used to represent a resource in Azure that 
+can be assigned roles and permissions to interact with other resources and the Azure API. The `az aks create` command automatically generates 
+a service principal to use with your newly created cluster. However, in order to run this command, your Azure account must have permission access to create
 service principals. 
 
 Service principals can also be created manually with the `az ad sp create-for-rbac` command. This command outputs information about the
