@@ -352,12 +352,11 @@ cluster is being created.
 
 [role=command]
 ```
-az aks create -g guideGroup -n guideCluster --generate-ssh-keys
+az aks create -g guideGroup -n guideCluster
 ```
 
 Running this command creates an AKS cluster that is called `guideCluster` with the resource group
-`guideGroup`. The `--generate-ssh-keys` option creates `SSH` key files, if they are missing,
-and then stores them in the `~/.ssh` directory.
+`guideGroup`.
 
 The option `--node-count -c` could also be added to this `az aks create` command to create a cluster
 with a certain number of nodes in the Kubernetes node pool. By default, if this option is excluded,
