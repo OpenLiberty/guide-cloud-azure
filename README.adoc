@@ -138,6 +138,10 @@ where your services will be deployed, and link the registry to a resource group.
 A resource group is a logical collection of related resources that can be deployed and maintained as a single entity.
 For instance, resource groups can manage virtual machines, databases, and storage networks together as one collection.
 
+A resource group contains resources that are usually bound to a specific application, and dictates that these resources share the same lifecycle. 
+It is needed to control the communication between resources, manage resource access, and easily filter the cost of resources per application. 
+Azure container registries will act as one of these resources within your resource group.
+
 To create a resource group, an Azure location must be specified. The metadata for your resources are stored at this given location. 
 If resources are created later without specifying a location, these new resources will run in the
 same region that you specified for creating a resource group. 
@@ -214,8 +218,8 @@ You created this resource group before as `guideGroup`. The `-n` option specifie
 container registry to be created, which was defined as `guideRegistry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
 
 The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
-These different SKU options provide pricing for various levels of capacity and usage. You are using a `Basic` SKU because
-it has a cheaper cost and your application involves a lower usage of storage and image throughput.
+These different SKU options provide pricing for various levels of capacity and usage. You are using a `Basic` SKU because it is cheaper and 
+the services you will deploy have low storage and throughput requirements.
 
 You will see an output similar to the following:
 
@@ -358,8 +362,8 @@ can be assigned roles and permissions to interact with other resources and the A
 a service principal to use with your newly created cluster. However, in order to run this command, your Azure account must have permission access to create
 service principals. 
 
-Optionally, a cluster can be created with existing service principals. The `az ad sp create-for-rbac` command manually creates a service principal 
-and outputs information about it, including an `appId` and `password`.
+Optionally, you can create a service principal with the `az ad sp create-for-rbac` command and create a cluster with this new service prinicipal. 
+The `az ad sp create-for-rbac` command manually creates a service principal and outputs information about it, including an `appId` and `password`.
 In the `az aks create` cluster creation command, these two values can be passed into the additional arguments, `--service-principal` and `--client-secret`: 
 
 [role="no_copy"]
@@ -444,7 +448,7 @@ secret/guidesecret created
 
 === Creating a deployment definition
 
-Now that you have created a cluster and your container images are built, you can deploy the images using a Kubernetes resource definition.
+Now that your container images are built and you have created a Kubernetes cluster, you can deploy the images using a Kubernetes resource definition.
 
 A Kubernetes resource definition is a `yaml` file that contains a description of all your 
 deployments, services, or any other resources that you want to deploy. All resources can 
