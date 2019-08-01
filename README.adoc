@@ -13,7 +13,7 @@
 :page-description: Explore how to deploy microservices to Azure Kubernetes Service (AKS).
 :page-tags: ['Kubernetes', 'Docker', 'Cloud']
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'docker']
+:page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Microsoft Azure Kubernetes Service (AKS)
@@ -136,9 +136,7 @@ where your services will be deployed, and link the registry to a resource group.
 
 
 A resource group is a logical collection of related resources that can be deployed and maintained as a single entity.
-For instance, virtual machines, databases, and storage networks are types of resources that resource groups can be formed from.
-Resource groups are dedicated to container registries because the resources in these registries are used by several 
-different hosts and their containers. 
+For instance, resource groups can manage virtual machines, databases, and storage networks together as one collection.
 
 To create a resource group, an Azure location must be specified. The metadata for your resources are stored at this given location. 
 If resources are created later without specifying a location, these new resources will run in the
@@ -216,8 +214,8 @@ You created this resource group before as `guideGroup`. The `-n` option specifie
 container registry to be created, which was defined as `guideRegistry`. The `--admin-enabled` flag indicates that the admin user is enabled. 
 
 The possible Stock Keeping Unit (SKU) values that can be passed into the `--sku` option are `Basic`, `Standard`, and `Premium`.
-These different SKU options provide pricing for various levels of capacity and usage. Since your application involves a lower usage of
-storage and image throughput, you are using a `Basic` SKU, due to its cost-optimized solution. 
+These different SKU options provide pricing for various levels of capacity and usage. You are using a `Basic` SKU because
+it has a cheaper cost and your application involves a lower usage of storage and image throughput.
 
 You will see an output similar to the following:
 
@@ -262,13 +260,6 @@ Once you log in, you will see the following:
 Login Succeeded
 ----
 
-Your login credentials will be needed later, so keep your given password in mind. View the password for your
-Azure container registry:
-
-[role=command]
-```
-az acr credential show -n guideRegistry --query "passwords[0].value" -o tsv
-```
 
 // =================================================================================================
 // Uploading images to a container registry
@@ -282,7 +273,7 @@ The starting Java project, which you can find in the `start` directory, is a mul
 project. It is made up of the `system` and `inventory` microservices. Each microservice resides in its own directory,
 `start/system` and `start/inventory`. Both of these directories contain a Dockerfile, which is necessary
 for building the Docker images. If you're unfamiliar with Dockerfiles, check out the
-https://openliberty.io/guides/docker.html[Using Docker containers to develop microservices^] guide.
+https://openliberty.io/guides/containerize.html[Using Docker containers to develop microservices^] guide.
 
 Navigate to the `start` directory and run the following command:
 
@@ -367,11 +358,11 @@ can be assigned roles and permissions to interact with other resources and the A
 a service principal to use with your newly created cluster. However, in order to run this command, your Azure account must have permission access to create
 service principals. 
 
-Optionally, service principals can also be created manually with the `az ad sp create-for-rbac` command. This command outputs information about the
-service principal, including an `appId` and `password`.
-These two values can be passed into the `--service-principal` and `--client-secret` arguments in the cluster creation command, `az aks create`:
+Optionally, a cluster can be created with existing service principals. The `az ad sp create-for-rbac` command manually creates a service principal 
+and outputs information about it, including an `appId` and `password`.
+In the `az aks create` cluster creation command, these two values can be passed into the additional arguments, `--service-principal` and `--client-secret`: 
 
-[role=command]
+[role="no_copy"]
 ```
 az aks create \
     -g guideGroup \
@@ -419,8 +410,15 @@ aks-nodepool1-21407934-2   Ready    agent   2m34s   v1.12.8
 To be able to pull the images from your Azure container registry, the credentials of your registry must be added to your service
 through a secret. 
 
+View the password for your Azure container registry:
+
+[role=command]
+```
+az acr credential show -n guideRegistry --query "passwords[0].value" -o tsv
+```
+
 Use the `kubectl create secret docker-registry` command to create a secret to hold your registry credentials. 
-Replace `[password]` with the registry password that you viewed in the last section by running the 
+Replace `[password]` with the registry password that you viewed with the 
 `az acr credential show -n guideRegistry` command. The email that is associated with your Docker account should replace `[email-address]`.
 
 [role=command]
@@ -446,7 +444,7 @@ secret/guidesecret created
 
 === Creating a deployment definition
 
-Now that your container images are built, you can deploy them using a Kubernetes resource definition.
+Now that you have created a cluster and your container images are built, you can deploy the images using a Kubernetes resource definition.
 
 A Kubernetes resource definition is a `yaml` file that contains a description of all your 
 deployments, services, or any other resources that you want to deploy. All resources can 
