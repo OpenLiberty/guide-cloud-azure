@@ -135,12 +135,7 @@ where your services will be deployed, and link the registry to a resource group.
 === Creating a resource group
 
 
-A resource group is a logical collection of related resources that can be deployed and maintained as a single entity.
-For instance, resource groups can manage virtual machines, databases, and storage networks together as one collection.
-
-A resource group contains resources that are usually bound to a specific application, and dictates that these resources share the same lifecycle. 
-It is needed to control the communication between resources, manage resource access, and easily filter the cost of resources per application. 
-Azure container registries will act as one of these resources within your resource group.
+A resource group is an Azure construct to manage a logical collection of resources for your cloud deployments on Azure. For this guide, you will create a new resource group to manage the resources you need for your Kubernetes deployment.
 
 To create a resource group, an Azure location must be specified. The metadata for your resources are stored at this given location. 
 If resources are created later without specifying a location, these new resources will run in the
@@ -377,7 +372,7 @@ az aks create \
 
 Once the cluster is created, the command outputs information about the cluster.
 
-To view the credentials of your AKS cluster:
+Get the credentials of your cluster and connect it to Kubernetes using the `az aks get-credentials` command. The default Kubernetes configuration file that is updated with your cluster credentials is located at `~/.kube/config`. 
 
 [role=command]
 ```
