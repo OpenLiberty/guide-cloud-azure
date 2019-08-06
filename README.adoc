@@ -372,7 +372,7 @@ az aks create \
 
 Once the cluster is created, the command outputs information about the cluster.
 
-Get the credentials of your cluster and connect it to Kubernetes using the `az aks get-credentials` command. The default Kubernetes configuration file that is updated with your cluster credentials is located at `~/.kube/config`. 
+Merge the credentials of your cluster into your current Kubernetes configuration using the `az aks get-credentials` command. The default Kubernetes configuration file that is updated with your cluster credentials is located at `~/.kube/config`. 
 
 [role=command]
 ```
