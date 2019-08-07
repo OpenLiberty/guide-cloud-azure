@@ -57,7 +57,9 @@ kind: Service
 metadata:
   name: system-service
 spec:
+  # tag::sysLoadBalancer[]
   type: LoadBalancer
+  # end::sysLoadBalancer[]
   selector:
     app: system
   ports:
@@ -70,7 +72,9 @@ kind: Service
 metadata:
   name: inventory-service
 spec:
+  # tag::invLoadBalancer[]
   type: LoadBalancer
+  # end::invLoadBalancer[]
   selector:
     app: inventory
   ports:

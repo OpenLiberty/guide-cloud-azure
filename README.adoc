@@ -13,7 +13,7 @@
 :page-description: Explore how to deploy microservices to Azure Kubernetes Service (AKS).
 :page-tags: ['Kubernetes', 'Docker', 'Cloud']
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config']
+:page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'kubernetes-microprofile-health']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Microsoft Azure Kubernetes Service (AKS)
@@ -130,7 +130,8 @@ include::{common-includes}/gitclone.adoc[]
 == Managing an Azure Container Registry
 
 In order to deploy your microservices, you need to create an Azure Container Registry in the same location 
-where your services will be deployed, and link the registry to a resource group. 
+where your services will be deployed, and link the registry to a resource group. Your registry will manage container instances 
+that will be deployed to a Kubernetes cluster.
 
 === Creating a resource group
 
@@ -469,6 +470,10 @@ The [hotspot=sysImage hotspot=invImage file=0]`image` is the name and tag of the
 to use for the container. The [hotspot]`kubernetes.yaml` file references the images that you pushed to `guideRegistry`
 for the [hotspot=sysImage file=0]`system` and [hotspot=invImage file=0]`inventory` repositories. These images can be pulled
 with the [hotspot=sysSecret hotspot=invSecret file=0]`secret` that you defined before.
+
+The service used to expose your deployments has a type of [hotspot=sysLoadBalancer hotspot=invLoadBalancer file=0]`LoadBalancer`. 
+This means you can access these services from IP addresses that forward incoming traffic to your nodepool via a specific port.
+Note that there are other ways to expose your services such as using a `NodePort` service type. 
 
 === Deploying your application
 
