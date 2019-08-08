@@ -356,21 +356,9 @@ three nodes are assigned to the node pool.
 
 An AKS cluster requires a service principal, which is an identity that is used to represent a resource in Azure that 
 can be assigned roles and permissions to interact with other resources and the Azure API. The `az aks create` command automatically generates 
-a service principal to use with your newly created cluster. However, to run this command, your Azure account must have permission access to create
-service principals. 
-
-Optionally, you can create a service principal with the `az ad sp create-for-rbac` command and create a cluster with this new service principal. 
-The `az ad sp create-for-rbac` command manually creates a service principal and outputs information about it, including an `appId` and `password`.
-In the `az aks create` cluster creation command, these two values can be passed into the additional arguments, `--service-principal` and `--client-secret`: 
-
-[role="no_copy"]
-```
-az aks create \
-    -g guideGroup \
-    -n guideCluster \
-    --service-principal [appId] \
-    --client-secret [password]
-```
+a service principal to use with your newly created cluster. 
+Optionally, you can https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal#manually-create-a-service-principal[manually create a service principal^] yourself and create a cluster with this new service principal.
+However, to run this command, your Azure account must have permission access to create service principals. 
 
 When the cluster is created, the command outputs information about the cluster.
 
