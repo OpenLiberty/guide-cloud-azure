@@ -53,8 +53,8 @@ guide.
 
 There are different cloud-based solutions for running your workloads in a {kube} cluster. 
 A cloud-based infrastructure enables you to focus on developing your microservices without
-worrying about details related to the servers you deploy them to. Using a cloud helps
-you to easily scale and serve your microservices in a high-availability setup.
+worrying about details related to the servers used for deployment. Using a cloud helps
+you to easily scale and manage your microservices in a high-availability setup.
 
 Azure offers a managed {kube} service called Azure Kubernetes Service (AKS). Using AKS simplifies the process of running Kubernetes on Azure without 
 needing to install or maintain your own Kubernetes control plane. It provides a hosted {kube} 
