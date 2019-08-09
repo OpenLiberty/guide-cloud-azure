@@ -51,9 +51,9 @@ deploying, managing, and scaling containerized applications. If you would like t
 more about Kubernetes, check out the https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^]
 guide.
 
-You can run your workloads in a Kubernetes cluster with different cloud-based solutions. 
-To focus on developing your microservices without worrying about details related to the servers you deploy them to, 
-you can enable a cloud-based infrastructure. Using a cloud helps 
+There are different cloud-based solutions for running your workloads in a {kube} cluster. 
+A cloud-based infrastructure enables you to focus on developing your microservices without
+worrying about details related to the servers you deploy them to. Using a cloud helps
 you to easily scale and serve your microservices in a high-availability setup.
 
 Azure offers a managed {kube} service called Azure Kubernetes Service (AKS). Using AKS simplifies the process of running Kubernetes on Azure without 
@@ -339,8 +339,9 @@ docker push guideregistry.azurecr.io/inventory:1.0-SNAPSHOT
 
 === Provisioning a cluster
 
-To create your AKS cluster, use the `az aks create` cluster command. You might need to wait while your
-cluster is being created.
+To create your AKS cluster, use the `az aks create` cluster command. 
+When the cluster is created, the command outputs information about the cluster.
+You might need to wait while your cluster is being created.
 
 [role=command]
 ```
@@ -359,8 +360,6 @@ can be assigned roles and permissions to interact with other resources and the A
 a service principal to use with your newly created cluster. 
 Optionally, you can https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal#manually-create-a-service-principal[manually create a service principal^] yourself and create a cluster with this new service principal.
 However, to run this command, your Azure account must have permission access to create service principals. 
-
-When the cluster is created, the command outputs information about the cluster.
 
 Merge the credentials of your cluster into your current Kubernetes configuration by using the `az aks get-credentials` command. 
 The default Kubernetes configuration file that is updated with your cluster credentials is located within the `~/.kube/config` filepath. 
@@ -506,7 +505,7 @@ inventory-deployment-645767664f-nbtd9   1/1       Running   0          15s
 You need the external IP addresses that are associated with the `system` and `inventory` services to try out your microservices.
 
 Take note of the `EXTERNAL-IP` in the output of the following commands. It is the 
-hostname that you will later substitute into the `[hostname]` credential.
+hostname that you will later substitute into `[EXTERNAL-IP]` to access the `system` and `inventory` services.
 
 View the information of the `system` service to see its `EXTERNAL-IP` address:
 
@@ -637,7 +636,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
 == Tearing down the environment
 
-It is important to clean up your resources when you are finished with the guide so that you do not incur extra charges for ongoing service.
+It is important to clean up your resources when you are finished with the guide so that you do not incur extra charges for ongoing usage.
 
 When you no longer need your deployed microservices, you can delete all {kube} resources 
 by running the `kubectl delete` command:
