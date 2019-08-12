@@ -9,7 +9,7 @@
 :projectid: cloud-azure
 :page-layout: guide-multipane
 :page-duration: 1 hour
-:page-releasedate: 2019-08-01
+:page-releasedate: 2019-08-13
 :page-description: Explore how to deploy microservices to Azure Kubernetes Service (AKS).
 :page-tags: ['Kubernetes', 'Docker', 'Cloud']
 :page-permalink: /guides/{projectid}
@@ -274,7 +274,7 @@ The starting Java project, which you can find in the `start` directory, is a mul
 project. It is made up of the `system` and `inventory` microservices. Each microservice exists in its own directory,
 `start/system` and `start/inventory`. Both of these directories contain a Dockerfile, which is necessary
 for building the Docker images. If you're unfamiliar with Dockerfiles, check out the
-https://openliberty.io/guides/containerize.html[Using Docker containers to develop microservices^] guide.
+https://openliberty.io/guides/containerize.html[Containerizing microservices^] guide.
 
 Navigate to the `start` directory and run the following command:
 
