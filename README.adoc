@@ -14,7 +14,7 @@
 :page-tags: ['Kubernetes', 'Docker', 'Cloud']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'kubernetes-microprofile-health']
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:common-includes: ../guides-common/
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Microsoft Azure Kubernetes Service (AKS)
 :page-seo-description: A tutorial on how to deploy microservices to Microsoft AKS using Azure Container Registry (ACR) as a private container registry.
@@ -74,9 +74,9 @@ This demonstrates how communication can be established between pods inside a clu
 // Prerequisites
 // =================================================================================================
 
-== Prerequisites
+== Additional prerequisites
 
-Before you begin, the following tools need to be installed:
+Before you begin, the following additional tools need to be installed:
 
 * *Docker:* You need a containerization software for building containers. Kubernetes 
 supports various container types, but you will use Docker in this guide. For installation 
