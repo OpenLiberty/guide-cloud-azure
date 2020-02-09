@@ -7,30 +7,28 @@ set -euxo pipefail
 ##
 ##############################################################################
 
-mvn -q package
+mvn -q clean package
 
-docker build -t system:test system/.
-docker build -t inventory:test inventory/.
+cd inventory
+mvn -q clean package liberty:create liberty:install-feature liberty:deploy
+mvn liberty:start
 
-kubectl apply -f ../scripts/test.yaml
+cd ../system
+mvn -q clean package liberty:create liberty:install-feature liberty:deploy
+mvn liberty:start
+
+cd ..
 
 sleep 120
 
-kubectl get pods
+curl http://localhost:9080/system/properties
+curl http://localhost:9081/inventory/systems/
 
-echo `minikube ip`
-
-GUIDE_IP=`minikube ip`
-GUIDE_SYSTEM_PORT=`kubectl get service system-service -o jsonpath="{.spec.ports[0].nodePort}"`
-GUIDE_INVENTORY_PORT=`kubectl get service inventory-service -o jsonpath="{.spec.ports[0].nodePort}"`
-
-curl http://$GUIDE_IP:$GUIDE_SYSTEM_PORT/system/properties
-
-curl http://$GUIDE_IP:$GUIDE_INVENTORY_PORT/inventory/systems/system-service
-
-mvn failsafe:integration-test -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip` -Dsystem.http.port=$GUIDE_SYSTEM_PORT -Dinventory.http.port=$GUIDE_INVENTORY_PORT
+mvn failsafe:integration-test -Dsystem.ip="localhost" -Dinventory.ip="localhost"
 mvn failsafe:verify
 
-kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
+cd inventory
+mvn liberty:stop
 
-kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep inventory)
+cd ../system
+mvn liberty:stop
