@@ -454,7 +454,7 @@ guide.
 `kubernetes.yaml`
 ----
 [role="edit_command_text"]
-Replace `[registry-server]` with your container registry server.
+Replace [hotspot=sysImage hotspot=invImage file=0]`[registry-server]` with your container registry server.
 You can get the login server for your registry by running `az acr show -n [registry-name] --query loginServer` command.
 
 kubernetes.yaml
