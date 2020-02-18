@@ -17,7 +17,7 @@
 :common-includes: ../guides-common/
 :source-highlighter: prettify
 :page-seo-title: Deploying Java microservices to Microsoft Azure Kubernetes Service (AKS)
-:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices to Microsoft Azure Kubernetes Service (AKS) using Azure Container Registry (ACR) as a private container registry.
+:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices to Microsoft Azure Kubernetes Service (AKS) using Azure Container Registry (ACR).
 :guide-author: Open Liberty
 :page-essential: false
 = Deploying microservices to Azure Kubernetes Service
