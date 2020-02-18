@@ -593,8 +593,8 @@ The default properties that are defined in the [hotspot file=0]`pom.xml` file ar
 | *Property*                      | *Description*
 | [hotspot=sysKubeService file=0]`system.ip` | Name of the {kube} Service wrapping the `system` pods, `system-service` by default.
 | [hotspot=invKubeService file=0]`inventory.ip` | Name of the {kube} Service wrapping the `inventory` pods, `inventory-service` by default.
-| [hotspot=sysHttpPort file=0]`system.http.port`    | The HTTP port for the {kube} Service `system-service`, 9080 by default.
-| [hotspot=invHttpPort file=0]`inventory.http.port`    | The HTTP port of the {kube} Service `inventory-service`, 9081 by default.
+| [hotspot=sysHttpPort file=0]`sys.http.port`    | The HTTP port for the {kube} Service `system-service`, 9080 by default.
+| [hotspot=invHttpPort file=0]`inv.http.port`    | The HTTP port of the {kube} Service `inventory-service`, 9081 by default.
 |===
 
 
