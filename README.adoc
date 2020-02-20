@@ -204,8 +204,8 @@ You will see an output similar to the following:
 
 Your private container registry manages Docker images that you build in later steps. 
 With the Azure `az acr` command, create an Azure Container Registry.
-Replace `[registry-name]` with a container registry name that is unique within Azure, and
-contains 5-50 alphanumeric characters. You can check if a registry name already exists by
+Replace `[registry-name]` with a container registry name that is unique within Azure and
+contains 5-50 alphanumeric characters. You can check whether a registry name already exists by
 using the `az acr check-name -n [registry-name]` command.
 
 [role=command]
@@ -250,7 +250,7 @@ which is `[registry-name].azurecr.io`, with all lowercase letters.
 
 === Logging into the container registry
 
-You must log in to your Azure Container Registry by using the Azure CLI, to push Docker images to your registry.
+To push Docker images to your registry, you must log in to your Azure Container Registry by using the Azure CLI.
 
 [role=command]
 ```
@@ -455,7 +455,7 @@ guide.
 ----
 [role="edit_command_text"]
 Replace [hotspot=sysImage hotspot=invImage file=0]`[registry-server]` with your container registry server.
-You can get the login server for your registry by running `az acr show -n [registry-name] --query loginServer` command.
+You can get the login server for your registry by running the `az acr show -n [registry-name] --query loginServer` command.
 
 kubernetes.yaml
 [source, Text, linenums, indent=0, role="code_column"]
@@ -600,8 +600,8 @@ The default properties that are defined in the [hotspot file=0]`pom.xml` file ar
 
 === Running the tests
 
-Run the Maven `failsafe:integration-test` goal to test your microservices by replacing the `[system-EXTERNAL-IP]` and `[inventory-EXTERNAL-IP]`
-with the value determined in the previous section.
+Run the Maven `failsafe:integration-test` goal to test your microservices by replacing `[system-EXTERNAL-IP]` and `[inventory-EXTERNAL-IP]`
+with the values that were determined in the previous section.
 
 [role='command']
 ```
