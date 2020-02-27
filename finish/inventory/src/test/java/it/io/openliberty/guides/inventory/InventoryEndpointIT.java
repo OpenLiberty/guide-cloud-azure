@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2018, 2019 IBM Corporation and others.
+ * Copyright (c) 2018, 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,48 +12,45 @@
 // end::copyright[]
 package it.io.openliberty.guides.inventory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.json.JsonObject;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Response;
-import javax.json.JsonObject;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.cxf.jaxrs.provider.jsrjsonp.JsrJsonpProvider;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
-public class InventoryEndpointTest {
+@TestMethodOrder(OrderAnnotation.class)
+public class InventoryEndpointIT {
 
     private static String invUrl;
     private static String sysUrl;
     private static String systemServiceIp;
     private static String inventoryServiceIp;
+    private static Client client;
 
-    private Client client;
-    private Response response;
-
-    @BeforeClass
+    @BeforeAll
     public static void oneTimeSetup() {
-        String invServPort = System.getProperty("inv.http.port");
-        String sysServPort = System.getProperty("sys.http.port");
+        String invServPort = System.getProperty("inventory.http.port");
+        String sysServPort = System.getProperty("system.http.port");
 
         systemServiceIp = System.getProperty("system.ip");
         inventoryServiceIp = System.getProperty("inventory.ip");
 
         invUrl = "http://" + inventoryServiceIp + ":" + invServPort + "/inventory/systems/";
         sysUrl = "http://" + systemServiceIp + ":" + sysServPort + "/system/properties/";
-    }
 
-    @Before
-    public void setup() {
-        response = null;
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
                         public boolean verify(String hostname, SSLSession session) {
@@ -66,19 +63,13 @@ public class InventoryEndpointTest {
         client.target(invUrl + "reset").request().post(null);
     }
 
-    @After
-    public void teardown() {
+    @AfterAll
+    public static void teardown() {
         client.close();
     }
 
     @Test
-    public void testSuite() {
-        this.testEmptyInventory();
-        this.testHostRegistration();
-        this.testSystemPropertiesMatch();
-        this.testUnknownHost();
-    }
-    
+    @Order(1)
     public void testEmptyInventory() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -87,12 +78,14 @@ public class InventoryEndpointTest {
 
         int expected = 0;
         int actual = obj.getInt("total");
-        assertEquals("The inventory should be empty on application start but it wasn't",
-                    expected, actual);
+        assertEquals(expected, actual,
+                "The inventory should be empty on application start but it wasn't");
 
         response.close();
     }
 
+    @Test
+    @Order(2)
     public void testHostRegistration() {
         this.visitSystemService();
 
@@ -103,18 +96,21 @@ public class InventoryEndpointTest {
 
         int expected = 1;
         int actual = obj.getInt("total");
-        assertEquals("The inventory should have one entry for the system service:" 
-                                             + systemServiceIp, expected, actual);
+        assertEquals(expected, actual,
+                "The inventory should have one entry for the system service:"
+                    + systemServiceIp);
 
         boolean serviceExists = obj.getJsonArray("systems").getJsonObject(0)
                                     .get("hostname").toString()
                                     .contains(systemServiceIp);
-        assertTrue("A host was registered, but it was not " + systemServiceIp,
-                serviceExists);
+        assertTrue(serviceExists,
+                "A host was registered, but it was not " + systemServiceIp);
 
         response.close();
     }
 
+    @Test
+    @Order(3)
     public void testSystemPropertiesMatch() {
         Response invResponse = this.getResponse(invUrl);
         Response sysResponse = this.getResponse(sysUrl);
@@ -144,6 +140,8 @@ public class InventoryEndpointTest {
         sysResponse.close();
     }
 
+    @Test
+    @Order(4)
     public void testUnknownHost() {
         Response response = this.getResponse(invUrl);
         this.assertResponse(invUrl, response);
@@ -155,8 +153,8 @@ public class InventoryEndpointTest {
         String obj = badResponse.readEntity(String.class);
 
         boolean isError = obj.contains("ERROR");
-        assertTrue("badhostname is not a valid host but it didn't raise an error",
-                isError);
+        assertTrue(isError,
+                "badhostname is not a valid host but it didn't raise an error");
 
         response.close();
         badResponse.close();
@@ -170,17 +168,16 @@ public class InventoryEndpointTest {
 
     // Asserts that the given URL has the correct response code of 200.
     private void assertResponse(String url, Response response) {
-        assertEquals("Incorrect response code from " + url, 200,
-                    response.getStatus());
+        assertEquals(200, response.getStatus(), "Incorrect response code from " + url);
     }
 
     // Asserts that the specified JVM system property is equivalent in both the
     // system and inventory services.
     private void assertProperty(String propertyName, String hostname,
         String expected, String actual) {
-        assertEquals("JVM system property [" + propertyName + "] "
+        assertEquals(expected, actual, "JVM system property [" + propertyName + "] "
             + "in the system service does not match the one stored in "
-            + "the inventory service for " + hostname, expected, actual);
+            + "the inventory service for " + hostname);
     }
 
     // Makes a simple GET request to inventory/localhost.
