@@ -15,15 +15,11 @@ spec:
     spec:
       containers:
       - name: system-container
-        # tag::sysImage[]
         image: [registry-server]/system:1.0-SNAPSHOT
-        # end::sysImage[]
         ports:
         - containerPort: 9080
-      # tag::sysSecret[]
       imagePullSecrets:
       - name: guidesecret
-      # end::sysSecret[]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -42,24 +38,18 @@ spec:
     spec:
       containers:
       - name: inventory-container
-        # tag::invImage[]
         image: [registry-server]/inventory:1.0-SNAPSHOT
-        # end::invImage[]
         ports:
         - containerPort: 9081
-      # tag::invSecret[]
       imagePullSecrets:
       - name: guidesecret
-      # end::invSecret[]
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: system-service
 spec:
-  # tag::sysLoadBalancer[]
   type: LoadBalancer
-  # end::sysLoadBalancer[]
   selector:
     app: system
   ports:
@@ -72,9 +62,7 @@ kind: Service
 metadata:
   name: inventory-service
 spec:
-  # tag::invLoadBalancer[]
   type: LoadBalancer
-  # end::invLoadBalancer[]
   selector:
     app: inventory
   ports:
