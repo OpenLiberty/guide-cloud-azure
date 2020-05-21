@@ -14,7 +14,7 @@
 :page-tags: ['Kubernetes', 'Docker', 'Cloud']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'kubernetes-microprofile-health']
-:common-includes: ../guides-common/
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Deploying Java microservices to Microsoft Azure Kubernetes Service (AKS)
 :page-seo-description: A getting started tutorial with examples on how to deploy Java microservices to Microsoft Azure Kubernetes Service (AKS) using Azure Container Registry (ACR).
@@ -289,6 +289,8 @@ mvn package
 Now that your microservices are packaged, build your 
 Docker images using the `docker build` command. To build your image, you need to have Docker installed 
 and your Docker daemon started.
+
+include::{common-includes}/ol-kernel-docker-pull.adoc[]
 
 Run the following commands to build and containerize the application:
 
