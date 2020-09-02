@@ -47,6 +47,8 @@ docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 
 sed -i 's/\[registry-server\]\///g' kubernetes.yaml
+sed -i 's/targetPort: 9080/targetPort: 9080\n    nodePort: 31000/g' kubernetes.yaml
+sed -i 's/targetPort: 9081/targetPort: 9081\n    nodePort: 32000/g' kubernetes.yaml
 
 kubectl apply -f kubernetes.yaml
 
@@ -56,10 +58,10 @@ kubectl get pods
 
 echo `minikube ip`
 
-curl http://`minikube ip`:9080/system/properties
-curl http://`minikube ip`:9081/api/inventory/systems/system-service
+curl http://`minikube ip`:31000/system/properties
+curl http://`minikube ip`:32000/api/inventory/systems/system-service
 
-mvn failsafe:integration-test -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip`
+mvn failsafe:integration-test -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip` -Dsystem.http.port=31000 -Dinventory.http.port=32000 
 mvn failsafe:verify
 
 kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
