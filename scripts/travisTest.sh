@@ -56,8 +56,8 @@ kubectl get pods
 
 echo `minikube ip`
 
-curl http://`minikube ip`:31000/system/properties
-curl http://`minikube ip`:32000/api/inventory/systems/system-service
+curl http://`minikube ip`:9080/system/properties
+curl http://`minikube ip`:9081/api/inventory/systems/system-service
 
 mvn failsafe:integration-test -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip`
 mvn failsafe:verify
