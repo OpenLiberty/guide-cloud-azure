@@ -19,7 +19,7 @@ mvn liberty:start
 
 cd ..
 
-sleep 120
+sleep 20
 
 curl http://localhost:9080/system/properties
 curl http://localhost:9081/inventory/systems/
@@ -32,6 +32,8 @@ mvn liberty:stop
 
 cd ../system
 mvn liberty:stop
+
+cd ..
 
 ##############################################################################
 ##
