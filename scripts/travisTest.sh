@@ -46,8 +46,7 @@ docker pull openliberty/open-liberty:kernel-java8-openj9-ubi
 docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 
-sed -i 's/\[inventory-repository-uri\]/inventory/g' kubernetes.yaml
-sed -i 's/\[system-repository-uri\]/system/g' kubernetes.yaml
+sed -i 's/\[registry-server\]\///g' kubernetes.yaml
 
 kubectl apply -f kubernetes.yaml
 
