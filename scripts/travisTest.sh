@@ -22,7 +22,7 @@ cd ..
 sleep 20
 
 curl http://localhost:9080/system/properties
-curl http://localhost:9081/inventory/systems/
+curl http://localhost:9081/inventory/systems
 
 mvn failsafe:integration-test -Dsystem.ip="localhost" -Dinventory.ip="localhost"
 mvn failsafe:verify
@@ -59,7 +59,7 @@ kubectl get pods
 echo `minikube ip`
 
 curl http://`minikube ip`:31000/system/properties
-curl http://`minikube ip`:32000/inventory/systems/system-service
+curl http://`minikube ip`:32000/inventory/systems
 
 mvn failsafe:integration-test -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip` -Dsystem.http.port=31000 -Dinventory.http.port=32000 
 mvn failsafe:verify
