@@ -18,6 +18,7 @@ script:
   - sudo minikube start --vm-driver=none --bootstrapper=localkube
   - ../scripts/travisTest.sh
 after_script:
+  - docker images
   - logsPath=$(find . -name "console.log" | sed "s/console.log//g");
   - build=$(grep "Open Liberty" $logsPath/console.log | cut -d" " -f5 | cut -d")" -f1 );
   - release=$( echo "$build" | cut -d'/' -f1); 
