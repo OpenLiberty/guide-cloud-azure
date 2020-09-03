@@ -56,6 +56,8 @@ sleep 120
 
 kubectl get pods
 
+kubectl get service/system-service
+kubectl get service/inventory-service
 echo `minikube ip`
 
 curl http://`minikube ip`:31000/system/properties
