@@ -63,7 +63,12 @@ echo `minikube ip`
 curl http://`minikube ip`:31000/system/properties
 curl http://`minikube ip`:32000/inventory/systems/system-service
 
-mvn failsafe:integration-test -Dsystem.ip=`minikube ip` -Dinventory.ip=`minikube ip` -Dsystem.http.port=31000 -Dinventory.http.port=32000 
+cd system
+mvn failsafe:integration-test -Dsystem.ip=`minikube ip` -Dsystem.http.port=31000
+mvn failsafe:verify
+
+cd ../inventory
+mvn failsafe:integration-test -Dsystem.ip=system-service -Dinventory.ip=`minikube ip` -Dinventory.http.port=32000 
 mvn failsafe:verify
 
 kubectl logs $(kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
