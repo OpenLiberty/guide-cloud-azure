@@ -51,7 +51,7 @@ docker build -t inventory:1.0-SNAPSHOT inventory/.
 #sed -i 's/targetPort: 9081/targetPort: 9081\n    nodePort: 32000/g' kubernetes.yaml
 
 #kubectl apply -f kubernetes.yaml
-kubectl apply -f ../script/test.yaml
+kubectl apply -f ../scripts/test.yaml
 
 sleep 120
 
