@@ -46,11 +46,12 @@ docker pull openliberty/open-liberty:kernel-java8-openj9-ubi
 docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 
-sed -i 's/\[registry-server\]\///g' kubernetes.yaml
-sed -i 's/targetPort: 9080/targetPort: 9080\n    nodePort: 31000/g' kubernetes.yaml
-sed -i 's/targetPort: 9081/targetPort: 9081\n    nodePort: 32000/g' kubernetes.yaml
+#sed -i 's/\[registry-server\]\///g' kubernetes.yaml
+#sed -i 's/targetPort: 9080/targetPort: 9080\n    nodePort: 31000/g' kubernetes.yaml
+#sed -i 's/targetPort: 9081/targetPort: 9081\n    nodePort: 32000/g' kubernetes.yaml
 
-kubectl apply -f kubernetes.yaml
+#kubectl apply -f kubernetes.yaml
+kubectl apply -f ../script/test.yaml
 
 sleep 120
 
