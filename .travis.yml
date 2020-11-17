@@ -39,4 +39,3 @@ after_script:
 branches:
   only: 
   - master
-  - qa
