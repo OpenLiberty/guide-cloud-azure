@@ -28,6 +28,13 @@ cat system/Dockerfile inventory/Dockerfile
 
 docker pull "openliberty/daily:latest"
 
-sudo ../scripts/startMinikube.sh
-sudo ../scripts/testApp.sh
-sudo ../scripts/stopMinikube.sh
+IMAGEBUILDLEVEL=$(docker inspect --format "{{ index .Config.Labels \"org.opencontainers.image.revision\"}}" openliberty/daily:latest)
+
+if [ $IMAGEBUILDLEVEL == $BUILD ] 
+then
+    sudo ../scripts/startMinikube.sh
+    sudo ../scripts/testApp.sh
+    sudo ../scripts/stopMinikube.sh
+else
+    echo "Image does not match input build level for testing"
+fi
