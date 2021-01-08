@@ -1,11 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-##############################################################################
-##
-##  Travis CI test script
-##
-##############################################################################
+# Test app
 
 mvn -q clean package
 
@@ -32,3 +28,6 @@ mvn liberty:stop
 
 cd ../system
 mvn liberty:stop
+
+# Clear .m2 cache
+rm -rf ~/.m2
