@@ -452,7 +452,7 @@ guide.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Update the `kubernetes.yaml`.#
+#Update the `kubernetes.yaml` file in the `start` directory.#
 `kubernetes.yaml`
 ----
 [role="edit_command_text"]
