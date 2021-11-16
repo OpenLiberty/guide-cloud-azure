@@ -290,7 +290,7 @@ Now that your microservices are packaged, build your
 Docker images using the `docker build` command. To build your image, you need to have Docker installed 
 and your Docker daemon started.
 
-include::{common-includes}/ol-full-docker-pull.adoc[]
+include::{common-includes}/ol-icr-full-docker-pull.adoc[]
 
 Run the following commands to build and containerize the application:
 
