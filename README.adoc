@@ -654,7 +654,7 @@ by running the `kubectl delete` command:
 kubectl delete -f kubernetes.yaml
 ```
 
-Since you are done testing your cluster, clean up all of its related sources using the `az group delete` command.
+Because you are done testing your cluster, clean up all of its related sources using the `az group delete` command.
 This command removes the resource group, container service, and all related resources:
 
 [role='command']
