@@ -47,8 +47,10 @@ public class InventoryEndpointIT {
         systemServiceIp = System.getProperty("system.ip");
         inventoryServiceIp = System.getProperty("inventory.ip");
 
-        invUrl = "http://" + inventoryServiceIp + ":" + invServPort + "/inventory/systems/";
-        sysUrl = "http://" + systemServiceIp + ":" + sysServPort + "/system/properties/";
+        invUrl = "http://" + inventoryServiceIp + ":" + invServPort
+                + "/inventory/systems/";
+        sysUrl = "http://" + systemServiceIp + ":" + sysServPort
+                + "/system/properties/";
 
         client = ClientBuilder.newBuilder()
                     .hostnameVerifier(new HostnameVerifier() {
@@ -117,10 +119,10 @@ public class InventoryEndpointIT {
         this.assertResponse(sysUrl, sysResponse);
 
         JsonObject jsonFromInventory = (JsonObject) invResponse
-                                                            .readEntity(JsonObject.class)
-                                                            .getJsonArray("systems")
-                                                            .getJsonObject(0)
-                                                            .get("properties");
+                                                        .readEntity(JsonObject.class)
+                                                        .getJsonArray("systems")
+                                                        .getJsonObject(0)
+                                                        .get("properties");
 
         JsonObject jsonFromSystem = sysResponse.readEntity(JsonObject.class);
 
