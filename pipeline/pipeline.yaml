@@ -1,0 +1,51 @@
+trigger:
+- main  # Trigger the pipeline on changes to the main branch
+
+pr:
+- none  # Disable PR triggers for this pipeline
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dockerRegistryServiceConnection: DockerHub
+  
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+
+
+- script: |
+    echo "Logging in to Azure"
+    az login --service-principal -u "747897d8-c656-4ce3-9679-68f1549aa986" -p "ztJ8Q~MsIOKvZ9RB1Pz1qPc-oIx0H1g69muzEcB5" --tenant "7917799a-9669-4e41-b87d-4c14fefd7c41"
+  displayName: 'Azure Login'
+
+- script: |
+    echo "Setting kubeconfig"
+    az aks get-credentials --resource-group RG-JAVA-APP --name DeployMicroservice
+  displayName: 'Set AKS kubeconfig'
+  
+- script: |
+    echo "Maven Package"
+    mvn package
+  displayName: 'Set Maven Settings'
+  
+- script: |
+    docker build -t system:1.0-SNAPSHOT system/.
+    docker build -t inventory:1.0-SNAPSHOT inventory/..
+    docker login -u "malakbenmansour" -p "malak2001" docker.io
+    docker tag system:1.0-SNAPSHOT malakbenmansour/system:1.0-SNAPSHOT
+    docker tag inventory:1.0-SNAPSHOT malakbenmansour/inventory:1.0-SNAPSHOT
+    docker push malakbenmansour/system:1.0-SNAPSHOT
+    docker push malakbenmansour/inventory:1.0-SNAPSHOT
+  displayName: 'Build and Push Docker Image'
+
+- script: |
+    az account set --subscription 49e964c1-6685-4061-a989-d3234141943f
+    az aks get-credentials --resource-group RG-JAVA-APP --name DeployMicroservice
+    kubectl apply -f /start/kubernetes.yaml
+  displayName: 'Deploy to AKS'
