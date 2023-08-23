@@ -35,8 +35,8 @@ steps:
   displayName: 'Set Maven Settings'
   
 - script: |
-    docker build -t system:1.0-SNAPSHOT system/.
-    docker build -t inventory:1.0-SNAPSHOT inventory/..
+    docker build -t system:1.0-SNAPSHOT /start/system
+    docker build -t inventory:1.0-SNAPSHOT /start/inventory
     docker login -u "malakbenmansour" -p "malak2001" docker.io
     docker tag system:1.0-SNAPSHOT malakbenmansour/system:1.0-SNAPSHOT
     docker tag inventory:1.0-SNAPSHOT malakbenmansour/inventory:1.0-SNAPSHOT
