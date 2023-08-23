@@ -47,5 +47,5 @@ steps:
 - script: |
     az account set --subscription 49e964c1-6685-4061-a989-d3234141943f
     az aks get-credentials --resource-group RG-JAVA-APP --name DeployMicroservice
-    kubectl apply -f /start/kubernetes.yaml
+    kubectl apply -f start/kubernetes.yaml
   displayName: 'Deploy to AKS'
