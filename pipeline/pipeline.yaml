@@ -31,7 +31,7 @@ steps:
   
 - script: |
     echo "Maven Package"
-    mvn package
+    mvn package /start/pom.xml
   displayName: 'Set Maven Settings'
   
 - script: |
