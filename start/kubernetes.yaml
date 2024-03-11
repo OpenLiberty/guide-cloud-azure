@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: system-container
-        image: [registry-server]/system:1.0-SNAPSHOT
+        image: malakbenmansour/system:1.0-SNAPSHOT
         ports:
         - containerPort: 9080
       imagePullSecrets:
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: inventory-container
-        image: [registry-server]/inventory:1.0-SNAPSHOT
+        image: malakbenmansour/inventory:1.0-SNAPSHOT
         ports:
         - containerPort: 9081
       imagePullSecrets:
