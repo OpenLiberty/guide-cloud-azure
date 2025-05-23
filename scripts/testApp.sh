@@ -1,39 +1,40 @@
 #!/bin/bash
 set -euxo pipefail
+./mvnw -version
 
 # Test app
 
-mvn -ntp -q clean package
+./mvnw -ntp -q clean package
 
-cd inventory
-mvn -ntp -Dhttp.keepAlive=false \
+./mvnw -pl inventory \
+    -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q clean package liberty:create liberty:install-feature liberty:deploy
-mvn -ntp liberty:start
+./mvnw -pl inventory \
+    -ntp liberty:start
 
-cd ../system
-mvn -ntp -Dhttp.keepAlive=false \
+./mvnw -pl system \
+    -ntp -Dhttp.keepAlive=false \
     -Dmaven.wagon.http.pool=false \
     -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 \
     -q clean package liberty:create liberty:install-feature liberty:deploy
-mvn -ntp liberty:start
-
-cd ..
+./mvnw -pl system \
+    -ntp liberty:start
 
 sleep 120
 
 curl http://localhost:9080/system/properties
 curl http://localhost:9081/inventory/systems/
 
-mvn -ntp failsafe:integration-test -Dsystem.ip="localhost" -Dinventory.ip="localhost"
-mvn -ntp failsafe:verify
+./mvnw -ntp failsafe:integration-test -Dsystem.ip="localhost" -Dinventory.ip="localhost"
+./mvnw -ntp failsafe:verify
 
-cd inventory
-mvn -ntp liberty:stop
+./mvnw -pl inventory \
+    -ntp liberty:stop
 
-cd ../system
-mvn -ntp liberty:stop
+./mvnw -pl system \
+    -ntp liberty:stop
 
 # Clear .m2 cache
 rm -rf ~/.m2
