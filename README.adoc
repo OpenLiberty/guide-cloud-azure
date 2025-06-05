@@ -217,10 +217,31 @@ https://openliberty.io/guides/containerize.html[Containerizing microservices^] g
 
 Navigate to the `start` directory and run the following command:
 
-[role=command]
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+[role='command']
 ```
-mvn package
+mvnw.cmd package
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw package
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw package
+```
+--
 
 Now that your microservices are packaged, you can build the Docker images using the `docker build` commands. Ensure that Docker is installed and the Docker daemon is running before proceeding.
 
@@ -556,10 +577,31 @@ The default properties that are defined in the [hotspot file=0]`pom.xml` file ar
 Run the Maven `failsafe:integration-test` goal to test your microservices by replacing `[system-EXTERNAL-IP]` and `[inventory-EXTERNAL-IP]`
 with the values that were determined in the previous section.
 
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
 [role='command']
 ```
-mvn failsafe:integration-test -Dsystem.ip=[system-EXTERNAL-IP] -Dinventory.ip=[inventory-EXTERNAL-IP]
+mvnw.cmd failsafe:integration-test -Dsystem.ip=[system-EXTERNAL-IP] -Dinventory.ip=[inventory-EXTERNAL-IP]
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw failsafe:integration-test -Dsystem.ip=[system-EXTERNAL-IP] -Dinventory.ip=[inventory-EXTERNAL-IP]
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw failsafe:integration-test -Dsystem.ip=[system-EXTERNAL-IP] -Dinventory.ip=[inventory-EXTERNAL-IP]
+```
+--
 
 If the tests pass, you will see an output similar to the following for each service:
 
