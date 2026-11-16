@@ -22,7 +22,7 @@ set -euxo pipefail
 ./mvnw -pl system \
     -ntp liberty:start
 
-sleep 120
+sleep 180
 
 curl http://localhost:9080/system/properties
 curl http://localhost:9081/inventory/systems/
